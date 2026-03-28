@@ -1,2 +1,3 @@
-## Documentation
-- Data Model: docs/data-model.md
+# pill_pilot
+
+A new Flutter project.
