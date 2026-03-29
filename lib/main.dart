@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pill_pilot/pages/home_page.dart';
+// import 'package:pill_pilot/pages/home_page.dart';
+import 'package:pill_pilot/pages/test_add_medication.dart';
 
 void main() {
   runApp(const MainApp());
@@ -29,7 +30,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
 
-      home: HomePage(),
+      home: TestAddMedication(),
     );
   }
 }

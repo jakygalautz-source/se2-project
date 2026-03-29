@@ -92,9 +92,16 @@ class HomePage extends StatelessWidget {
                 ),
               ),
 
-              Align(
-                alignment: Alignment.centerRight,
-                child: Image.asset("lib/images/pills.png", height: 75),
+              Expanded(
+                child: Stack(
+                  children: [
+                    NextIntakeCard(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Image.asset("lib/images/pills.png", height: 75),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
