@@ -7,6 +7,7 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyCard(
+      border: Border.all(color: Colors.black, width: 1),
       child: Row(
         children: [
           Icon(Icons.history, color: Colors.black),

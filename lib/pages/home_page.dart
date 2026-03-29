@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pill_pilot/widgets/add_medication_card.dart';
 import 'package:pill_pilot/widgets/history_card.dart';
 import 'package:pill_pilot/widgets/my_medication_card.dart';
+import 'package:pill_pilot/widgets/next_intake_card.dart';
 import 'package:pill_pilot/widgets/settings_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -50,6 +51,8 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          NextIntakeCard(),
           const SizedBox(height: 20),
           AddMedicationCard(),
           const SizedBox(height: 12),
