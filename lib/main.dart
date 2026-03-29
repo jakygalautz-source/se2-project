@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pill_pilot/models/intake_slot_model.dart';
 // import 'package:pill_pilot/pages/home_page.dart';
 import 'package:pill_pilot/pages/test_add_medication.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      child: const MainApp(),
+      create: (context) => IntakeSlotModel(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
