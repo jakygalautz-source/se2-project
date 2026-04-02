@@ -6,17 +6,20 @@ class AddMedicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyCard(
-      color: const Color.fromARGB(255, 24, 227, 166),
-      child: Row(
-        children: [
-          Icon(Icons.add, color: Colors.black),
-          SizedBox(width: 10),
-          Text(
-            "Medikament hinzufügen",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, '/medication_page'),
+      child: MyCard(
+        color: const Color.fromARGB(255, 24, 227, 166),
+        child: Row(
+          children: [
+            Icon(Icons.add, color: Colors.black),
+            SizedBox(width: 10),
+            Text(
+              "Medikament hinzufügen",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ],
+        ),
       ),
     );
   }

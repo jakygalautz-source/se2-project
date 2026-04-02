@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/intake_slot_model.dart';
-// import 'package:pill_pilot/pages/home_page.dart';
-import 'package:pill_pilot/pages/test_add_medication.dart';
+import 'package:pill_pilot/pages/home_page.dart';
+import 'package:pill_pilot/pages/medication_page.dart';
+// import 'package:pill_pilot/pages/test_add_medication.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,7 +38,13 @@ class MainApp extends StatelessWidget {
         ),
       ),
 
-      home: TestAddMedication(),
+      // home: MedicationPage(),
+      home: HomePage(),
+      // home: TestAddMedication(),
+      routes: {
+        '/home_page': (context) => HomePage(),
+        '/medication_page': (context) => MedicationPage(),
+      },
     );
   }
 }
