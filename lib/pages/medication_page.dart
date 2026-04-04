@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/widgets/intake_slot_card.dart';
 import 'package:pill_pilot/models/day_part.dart';
+import 'package:pill_pilot/widgets/change_time_button.dart';
+import 'package:pill_pilot/widgets/my_textfield.dart';
+import 'package:pill_pilot/widgets/save_button.dart';
 
 class MedicationPage extends StatelessWidget {
   final bool isEditMode;
@@ -20,58 +23,54 @@ class MedicationPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0),
-          child: isLandscape
-              ? _buildLandscape(context)
-              : _buildPortrait(context),
-        ),
+        child: isLandscape ? _buildLandscape(context) : _buildPortrait(context),
       ),
     );
   }
 
   Widget _buildPortrait(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 20),
-          TextField(
-            decoration: const InputDecoration(
-              labelText: "Medikament",
-              border: OutlineInputBorder(),
-            ),
+    return Scrollbar(
+      thumbVisibility: true,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 20),
+
+              MyTextfield(hintText: "Name des Medikaments eingeben"),
+
+              const SizedBox(height: 16),
+
+              ChangeTimeButton(
+                onTap: () {
+                  // hier geht es dann weiter zum Zeiten-ändern page (= page der Erinnerungsfunktionseinstellungen)
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              const IntakeSlotCard(dayPart: DayPart.morning),
+              const SizedBox(height: 12),
+              const IntakeSlotCard(dayPart: DayPart.noon),
+              const SizedBox(height: 12),
+              const IntakeSlotCard(dayPart: DayPart.evening),
+              const SizedBox(height: 12),
+              const IntakeSlotCard(dayPart: DayPart.night),
+
+              const SizedBox(height: 20),
+
+              SaveButton(
+                onTap: () {
+                  // hier werden das neue Medikament, die Einnahmemenge und Einnahmezeiten gespeichert
+                },
+              ),
+
+              const SizedBox(height: 20),
+            ],
           ),
-          const SizedBox(height: 20),
-
-          const IntakeSlotCard(dayPart: DayPart.morning),
-          const SizedBox(height: 12),
-          const IntakeSlotCard(dayPart: DayPart.noon),
-          const SizedBox(height: 12),
-          const IntakeSlotCard(dayPart: DayPart.evening),
-          const SizedBox(height: 12),
-          const IntakeSlotCard(dayPart: DayPart.night),
-
-          const SizedBox(height: 20),
-
-          OutlinedButton(
-            onPressed: () {
-              // hier geht es später zu einer Page wo die Zeiten von den Dayparts angepasst werden können
-            },
-            child: const Text("Zeiten anpassen"),
-          ),
-
-          const SizedBox(height: 12),
-
-          ElevatedButton(
-            onPressed: () {
-              // hier wird später gespeichert
-            },
-            child: const Text("Speichern"),
-          ),
-
-          const SizedBox(height: 20),
-        ],
+        ),
       ),
     );
   }

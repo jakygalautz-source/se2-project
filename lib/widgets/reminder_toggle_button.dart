@@ -31,7 +31,8 @@ class ReminderToggleButton extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               isEnabled
