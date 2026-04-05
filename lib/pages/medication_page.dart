@@ -76,6 +76,72 @@ class MedicationPage extends StatelessWidget {
   }
 
   Widget _buildLandscape(BuildContext context) {
-    return SingleChildScrollView();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // linke Seite
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 20),
+                  MyTextfield(hintText: "Name des Medikaments eingeben"),
+
+                  const SizedBox(height: 16),
+
+                  ChangeTimeButton(
+                    onTap: () {
+                      // hier können die Zeiten der 4 slots ausgewählt werden --> eigene Page
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  SaveButton(
+                    onTap: () {
+                      // hier werden die daten gespeichert --> medication_form_model.dart
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Rechte Seite
+          Expanded(
+            flex: 7,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+
+                      IntakeSlotCard(dayPart: DayPart.morning),
+                      SizedBox(height: 12),
+
+                      IntakeSlotCard(dayPart: DayPart.noon),
+                      SizedBox(height: 12),
+
+                      IntakeSlotCard(dayPart: DayPart.evening),
+                      SizedBox(height: 12),
+
+                      IntakeSlotCard(dayPart: DayPart.night),
+
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
