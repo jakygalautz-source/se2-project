@@ -4,6 +4,8 @@ import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/widgets/change_time_button.dart';
 import 'package:pill_pilot/widgets/my_textfield.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
+import 'package:provider/provider.dart';
+import 'package:pill_pilot/models/medication_form_model.dart';
 
 class MedicationPage extends StatelessWidget {
   final bool isEditMode;
@@ -39,7 +41,12 @@ class MedicationPage extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
 
-              MyTextfield(hintText: "Name des Medikaments eingeben"),
+              MyTextfield(
+                hintText: "Name des Medikaments eingeben",
+                onChanged: (value) {
+                  context.read<MedicationFormModel>().setMedicationName(value);
+                },
+              ),
 
               const SizedBox(height: 16),
 
@@ -63,7 +70,14 @@ class MedicationPage extends StatelessWidget {
 
               SaveButton(
                 onTap: () {
-                  // hier werden das neue Medikament, die Einnahmemenge und Einnahmezeiten gespeichert
+                  final medicationFormModel = context
+                      .read<MedicationFormModel>();
+
+                  if (!medicationFormModel.isValid) {
+                    debugPrint("Formular unvollständig");
+                    return;
+                  }
+                  debugPrint(medicationFormModel.toJson().toString());
                 },
               ),
 
@@ -90,7 +104,14 @@ class MedicationPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20),
-                  MyTextfield(hintText: "Name des Medikaments eingeben"),
+                  MyTextfield(
+                    hintText: "Name des Medikaments eingeben",
+                    onChanged: (value) {
+                      context.read<MedicationFormModel>().setMedicationName(
+                        value,
+                      );
+                    },
+                  ),
 
                   const SizedBox(height: 16),
 
@@ -102,7 +123,14 @@ class MedicationPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   SaveButton(
                     onTap: () {
-                      // hier werden die daten gespeichert --> medication_form_model.dart
+                      final medicationFormModel = context
+                          .read<MedicationFormModel>();
+
+                      if (!medicationFormModel.isValid) {
+                        debugPrint("Formular unvollständig");
+                        return;
+                      }
+                      debugPrint(medicationFormModel.toJson().toString());
                     },
                   ),
                 ],

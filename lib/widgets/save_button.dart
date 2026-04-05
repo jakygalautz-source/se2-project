@@ -16,9 +16,7 @@ class SaveButton extends StatelessWidget {
         ),
         elevation: 2,
       ),
-      onPressed: () {
-        // hier wird später gespeichert
-      },
+      onPressed: onTap,
       child: Text("Speichern", style: Theme.of(context).textTheme.titleMedium),
     );
   }
