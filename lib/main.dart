@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/intake_slot_model.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
 import 'package:pill_pilot/pages/home_page.dart';
+import 'package:pill_pilot/pages/medication_list_page.dart';
 import 'package:pill_pilot/pages/medication_page.dart';
-// import 'package:pill_pilot/pages/test_add_medication.dart';
 import 'package:provider/provider.dart';
+import 'package:pill_pilot/pages/test_page.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          child: const MainApp(),
-          create: (context) => IntakeSlotModel(),
-        ),
+        ChangeNotifierProvider(create: (context) => IntakeSlotModel()),
         ChangeNotifierProxyProvider<IntakeSlotModel, MedicationFormModel>(
           create: (context) => MedicationFormModel(
             intakeSlotModel: context.read<IntakeSlotModel>(),
@@ -51,12 +49,13 @@ class MainApp extends StatelessWidget {
         ),
       ),
 
-      // home: MedicationPage(),
+      // home: TestPage(),
       home: HomePage(),
-      // home: TestAddMedication(),
+
       routes: {
         '/home_page': (context) => HomePage(),
         '/medication_page': (context) => MedicationPage(),
+        '/medication_list_page': (context) => MedicationListPage(),
       },
     );
   }

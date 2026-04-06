@@ -64,9 +64,8 @@ class _MedicationPageState extends State<MedicationPage> {
           children: [
             Expanded(child: Text("Medikament gespeichert")),
             TextButton(
-              onPressed: () {
-                // hier wird dann zum Medikamentenliste navigiert! TODO medikamentenliste-page machen und verlinken
-              },
+              onPressed: () =>
+                  Navigator.pushNamed(context, '/medication_list_page'),
               child: const Text(
                 "zur Liste",
                 style: TextStyle(
