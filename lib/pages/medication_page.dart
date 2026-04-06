@@ -19,24 +19,51 @@ class _MedicationPageState extends State<MedicationPage> {
   final TextEditingController medicationNameController =
       TextEditingController();
 
+  bool isSaving = false;
+
   @override
   void dispose() {
     medicationNameController.dispose();
     super.dispose();
   }
 
-  void _handleSave() {
+  void _handleSave() async {
+    // awsync weil ich später "await" nutze
     final medicationFormModel = context.read<MedicationFormModel>();
 
     if (!medicationFormModel.isValid) {
-      debugPrint("Formular unvollständig");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Bitte alle Felder ausfüllen")),
+      );
       return;
     }
 
+    setState(() => isSaving = true);
+
     debugPrint(medicationFormModel.toJson().toString());
+
+    // FAKE: hier folgt ein fake-baclkend-delay TODO ersetzen mit Backend-Kommunikation
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) {
+      return;
+    } // schaut ob widget noch im UI drin ist um absturz nach await zu vermeiden
+
+    // Erfolg anzeigen
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Medikament gespeichert"),
+        backgroundColor: Colors.grey.shade800,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
 
     medicationFormModel.reset();
     medicationNameController.clear();
+
+    setState(() => isSaving = false);
   }
 
   @override
@@ -97,7 +124,7 @@ class _MedicationPageState extends State<MedicationPage> {
 
               const SizedBox(height: 20),
 
-              SaveButton(onTap: _handleSave),
+              SaveButton(onTap: _handleSave, isLoading: isSaving),
 
               const SizedBox(height: 20),
             ],
@@ -140,7 +167,7 @@ class _MedicationPageState extends State<MedicationPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  SaveButton(onTap: _handleSave),
+                  SaveButton(onTap: _handleSave, isLoading: isSaving),
                 ],
               ),
             ),
