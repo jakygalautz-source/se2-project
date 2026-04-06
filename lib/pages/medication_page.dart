@@ -33,7 +33,15 @@ class _MedicationPageState extends State<MedicationPage> {
 
     if (!medicationFormModel.isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Bitte alle Felder ausfüllen")),
+        SnackBar(
+          content: Text("Bitte alle Felder ausfüllen"),
+          backgroundColor: Colors.grey.shade800,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       );
       return;
     }
@@ -52,7 +60,24 @@ class _MedicationPageState extends State<MedicationPage> {
     // Erfolg anzeigen
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("Medikament gespeichert"),
+        content: Row(
+          children: [
+            Expanded(child: Text("Medikament gespeichert")),
+            TextButton(
+              onPressed: () {
+                // hier wird dann zum Medikamentenliste navigiert! TODO medikamentenliste-page machen und verlinken
+              },
+              child: const Text(
+                "zur Liste",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
         backgroundColor: Colors.grey.shade800,
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.all(16),
@@ -82,6 +107,14 @@ class _MedicationPageState extends State<MedicationPage> {
       body: SafeArea(
         child: isLandscape ? _buildLandscape(context) : _buildPortrait(context),
       ),
+      bottomNavigationBar: isLandscape
+          ? null
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: SaveButton(onTap: _handleSave, isLoading: isSaving),
+              ),
+            ),
     );
   }
 
@@ -106,14 +139,6 @@ class _MedicationPageState extends State<MedicationPage> {
 
               const SizedBox(height: 16),
 
-              ChangeTimeButton(
-                onTap: () {
-                  // hier geht es dann weiter zum Zeiten-ändern page (= page der Erinnerungsfunktionseinstellungen)
-                },
-              ),
-
-              const SizedBox(height: 16),
-
               const IntakeSlotCard(dayPart: DayPart.morning),
               const SizedBox(height: 12),
               const IntakeSlotCard(dayPart: DayPart.noon),
@@ -121,12 +146,14 @@ class _MedicationPageState extends State<MedicationPage> {
               const IntakeSlotCard(dayPart: DayPart.evening),
               const SizedBox(height: 12),
               const IntakeSlotCard(dayPart: DayPart.night),
+              const SizedBox(height: 16),
 
-              const SizedBox(height: 20),
-
-              SaveButton(onTap: _handleSave, isLoading: isSaving),
-
-              const SizedBox(height: 20),
+              ChangeTimeButton(
+                onTap: () {
+                  // hier geht es dann weiter zum Zeiten-ändern page (= page der Erinnerungsfunktionseinstellungen)
+                },
+              ),
+              const SizedBox(height: 50),
             ],
           ),
         ),
