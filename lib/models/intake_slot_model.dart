@@ -54,4 +54,6 @@ class IntakeSlotModel extends ChangeNotifier {
     reminders[dayPart] = !(reminders[dayPart] ?? false);
     notifyListeners();
   }
+
+  void resetAll() {}
 }

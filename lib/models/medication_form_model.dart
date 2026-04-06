@@ -69,6 +69,7 @@ class MedicationFormModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // so wird die klasse immer wieder "aufgeräumt
   @override
   void dispose() {
     intakeSlotModel.removeListener(_onIntakeChanged);

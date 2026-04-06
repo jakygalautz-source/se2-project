@@ -7,9 +7,37 @@ import 'package:pill_pilot/widgets/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
 
-class MedicationPage extends StatelessWidget {
+class MedicationPage extends StatefulWidget {
   final bool isEditMode;
   const MedicationPage({super.key, this.isEditMode = false});
+
+  @override
+  State<MedicationPage> createState() => _MedicationPageState();
+}
+
+class _MedicationPageState extends State<MedicationPage> {
+  final TextEditingController medicationNameController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    medicationNameController.dispose();
+    super.dispose();
+  }
+
+  void _handleSave() {
+    final medicationFormModel = context.read<MedicationFormModel>();
+
+    if (!medicationFormModel.isValid) {
+      debugPrint("Formular unvollständig");
+      return;
+    }
+
+    debugPrint(medicationFormModel.toJson().toString());
+
+    medicationFormModel.reset();
+    medicationNameController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +47,7 @@ class MedicationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEditMode ? "Medikament bearbeiten" : "Medikament eingeben",
+          widget.isEditMode ? "Medikament bearbeiten" : "Medikament eingeben",
         ),
         centerTitle: true,
       ),
@@ -42,6 +70,7 @@ class MedicationPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               MyTextfield(
+                controller: medicationNameController,
                 hintText: "Name des Medikaments eingeben",
                 onChanged: (value) {
                   context.read<MedicationFormModel>().setMedicationName(value);
@@ -68,18 +97,7 @@ class MedicationPage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              SaveButton(
-                onTap: () {
-                  final medicationFormModel = context
-                      .read<MedicationFormModel>();
-
-                  if (!medicationFormModel.isValid) {
-                    debugPrint("Formular unvollständig");
-                    return;
-                  }
-                  debugPrint(medicationFormModel.toJson().toString());
-                },
-              ),
+              SaveButton(onTap: _handleSave),
 
               const SizedBox(height: 20),
             ],
@@ -105,6 +123,7 @@ class MedicationPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20),
                   MyTextfield(
+                    controller: medicationNameController,
                     hintText: "Name des Medikaments eingeben",
                     onChanged: (value) {
                       context.read<MedicationFormModel>().setMedicationName(
@@ -121,18 +140,7 @@ class MedicationPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  SaveButton(
-                    onTap: () {
-                      final medicationFormModel = context
-                          .read<MedicationFormModel>();
-
-                      if (!medicationFormModel.isValid) {
-                        debugPrint("Formular unvollständig");
-                        return;
-                      }
-                      debugPrint(medicationFormModel.toJson().toString());
-                    },
-                  ),
+                  SaveButton(onTap: _handleSave),
                 ],
               ),
             ),
