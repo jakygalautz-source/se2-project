@@ -28,7 +28,7 @@ class _MedicationPageState extends State<MedicationPage> {
   }
 
   void _handleSave() async {
-    // awsync weil ich später "await" nutze
+    // async weil ich später "await" nutze
     final medicationFormModel = context.read<MedicationFormModel>();
 
     if (!medicationFormModel.isValid) {
