@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/day_part.dart';
-import 'package:pill_pilot/models/medication_form_model.dart';
 
 class IntakeSlotModel extends ChangeNotifier {
   final Map<DayPart, double> amounts = {

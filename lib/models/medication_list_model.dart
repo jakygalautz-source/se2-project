@@ -44,6 +44,91 @@ class MedicationListModel extends ChangeNotifier {
           MedicationIntakeModel(dayPart: 'noon', amount: 1.0, reminder: true),
         ],
       ),
+
+      Medication(
+        name: 'Bisoprolol (Betablocker)',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: true,
+          ),
+        ],
+      ),
+      Medication(
+        name: 'Eliquis (Blutverdünner)',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: true,
+          ),
+          MedicationIntakeModel(
+            dayPart: 'evening',
+            amount: 1.0,
+            reminder: true,
+          ),
+        ],
+      ),
+      Medication(
+        name: 'Atorvastatin (Cholesterin)',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'evening',
+            amount: 1.0,
+            reminder: true,
+          ),
+        ],
+      ),
+
+      Medication(
+        name: 'Zolpidem (Schlafmittel)',
+        intakes: [
+          MedicationIntakeModel(dayPart: 'night', amount: 0.5, reminder: true),
+        ],
+      ),
+
+      Medication(
+        name: 'Ramipril',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: true,
+          ),
+        ],
+      ),
+      Medication(
+        name: 'Torasemid (Diuretikum)',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: false,
+          ),
+        ],
+      ),
+
+      Medication(
+        name: 'Pantoprazol (Magenschutz)',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: false,
+          ),
+        ],
+      ),
+      Medication(
+        name: 'Vitamin D',
+        intakes: [
+          MedicationIntakeModel(
+            dayPart: 'morning',
+            amount: 1.0,
+            reminder: false,
+          ),
+        ],
+      ),
     ];
   }
 }

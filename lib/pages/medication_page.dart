@@ -229,27 +229,26 @@ class _MedicationPageState extends State<MedicationPage> {
             flex: 7,
             child: Scrollbar(
               thumbVisibility: true,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(12, 20, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
 
-                      IntakeSlotCard(dayPart: DayPart.morning),
-                      SizedBox(height: 12),
+                    IntakeSlotCard(dayPart: DayPart.morning),
+                    SizedBox(height: 12),
 
-                      IntakeSlotCard(dayPart: DayPart.noon),
-                      SizedBox(height: 12),
+                    IntakeSlotCard(dayPart: DayPart.noon),
+                    SizedBox(height: 12),
 
-                      IntakeSlotCard(dayPart: DayPart.evening),
-                      SizedBox(height: 12),
+                    IntakeSlotCard(dayPart: DayPart.evening),
+                    SizedBox(height: 12),
 
-                      IntakeSlotCard(dayPart: DayPart.night),
+                    IntakeSlotCard(dayPart: DayPart.night),
 
-                      SizedBox(height: 20),
-                    ],
-                  ),
+                    SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),

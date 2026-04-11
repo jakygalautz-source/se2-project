@@ -21,40 +21,123 @@ class _MedicationListPageState extends State<MedicationListPage> {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<MedicationListModel>();
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Meine Medikamente")),
-      body: model.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : model.isEmpty
-          ? const Center(child: Text('Noch keine Medikamente vorhanden'))
-          : ListView.separated(
-              padding: const EdgeInsets.all(20),
-              itemCount: model.medications.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final medication = model.medications[index];
+      body: SafeArea(
+        child: model.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : model.isEmpty
+            ? const Center(child: Text('Noch keine Medikamente vorhanden'))
+            : isLandscape
+            ? _buildLandscape(context, model)
+            : _buildPortrait(context, model),
+      ),
+    );
+  }
 
-                return MyMedicationListCard(
-                  medication: medication,
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MedicationPage(
-                          isEditMode: true,
-                          medication: medication,
-                        ),
-                      ),
-                    );
-                    if (!mounted) return;
-                    await model.loadMedications();
-                  },
+  Widget _buildPortrait(BuildContext context, MedicationListModel model) {
+    return Scrollbar(
+      thumbVisibility: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: ListView.separated(
+          padding: const EdgeInsets.all(20),
+          itemCount: model.medications.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final medication = model.medications[index];
+
+            return MyMedicationListCard(
+              medication: medication,
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MedicationPage(
+                      isEditMode: true,
+                      medication: medication,
+                    ),
+                  ),
                 );
+                if (!mounted) return;
+                await model.loadMedications();
               },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLandscape(BuildContext context, MedicationListModel model) {
+    return Scrollbar(
+      thumbVisibility: true,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: (model.medications.length / 2).ceil(),
+        itemBuilder: (context, rowIndex) {
+          final leftIndex = rowIndex * 2;
+          final rightIndex = leftIndex + 1;
+
+          final leftMedication = model.medications[leftIndex];
+          final rightMedication = rightIndex < model.medications.length
+              ? model.medications[rightIndex]
+              : null;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: MyMedicationListCard(
+                      medication: leftMedication,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MedicationPage(
+                              isEditMode: true,
+                              medication: leftMedication,
+                            ),
+                          ),
+                        );
+                        if (!mounted) return;
+                        await model.loadMedications();
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: rightMedication != null
+                        ? MyMedicationListCard(
+                            medication: rightMedication,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MedicationPage(
+                                    isEditMode: true,
+                                    medication: rightMedication,
+                                  ),
+                                ),
+                              );
+                              if (!mounted) return;
+                              await model.loadMedications();
+                            },
+                          )
+                        : const SizedBox(),
+                  ),
+                ],
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 }
-
-// TODO landscape modus
