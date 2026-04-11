@@ -11,11 +11,13 @@ class MedicationApi {
       "$baseUrl/medications", // ebentuell medications anpassen, je nachdem wie jaqui es nennt
     );
 
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(data),
-    );
+    final response = await http
+        .post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(data),
+        )
+        .timeout(const Duration(seconds: 2));
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception();

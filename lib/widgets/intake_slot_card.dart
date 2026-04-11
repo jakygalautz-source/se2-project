@@ -5,6 +5,7 @@ import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/widgets/pill_add_button.dart';
 import 'package:pill_pilot/widgets/reminder_toggle_button.dart';
 import 'package:provider/provider.dart';
+import 'package:pill_pilot/models/medication_form_model.dart';
 
 class IntakeSlotCard extends StatelessWidget {
   final DayPart dayPart;

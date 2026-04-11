@@ -1,5 +1,3 @@
-import 'package:pill_pilot/models/day_part.dart';
-
 class MedicationIntakeModel {
   final String dayPart;
   final double amount;

@@ -8,6 +8,7 @@ import 'package:pill_pilot/widgets/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
 import 'package:pill_pilot/models/medication_model.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
 
 class MedicationPage extends StatefulWidget {
   final bool isEditMode;
@@ -45,6 +46,8 @@ class _MedicationPageState extends State<MedicationPage> {
   void _handleSave() async {
     // async weil ich später "await" nutze
     final medicationFormModel = context.read<MedicationFormModel>();
+    final medicationListModel = context.read<MedicationListModel>();
+    final navigator = Navigator.of(context);
 
     if (!medicationFormModel.isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,32 +77,37 @@ class _MedicationPageState extends State<MedicationPage> {
       return;
     } // schaut ob widget noch im UI drin ist um absturz nach await zu vermeiden
 
+    await medicationListModel.loadMedications();
+
     // Erfolg anzeigen
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Expanded(child: Text("Medikament gespeichert")),
-            TextButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, '/medication_list_page'),
-              child: const Text(
-                "zur Liste",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.grey.shade800,
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Row(
+    //       children: [
+    //         Expanded(child: Text("Medikament gespeichert")),
+    //         TextButton(
+    //           onPressed: () =>
+    //               Navigator.pushNamed(context, '/medication_list_page'),
+    //           child: const Text(
+    //             "zur Liste",
+    //             style: TextStyle(
+    //               fontSize: 18,
+    //               fontWeight: FontWeight.bold,
+    //               color: Colors.white,
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     backgroundColor: Colors.grey.shade800,
+    //     behavior: SnackBarBehavior.floating,
+    //     margin: EdgeInsets.all(16),
+    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    //   ),
+    // );
+
+    if (!mounted) return;
+    navigator.pushReplacementNamed('/medication_list_page');
 
     medicationFormModel.reset();
     medicationNameController.clear();

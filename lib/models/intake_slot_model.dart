@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/day_part.dart';
+import 'package:pill_pilot/models/medication_form_model.dart';
 
 class IntakeSlotModel extends ChangeNotifier {
   final Map<DayPart, double> amounts = {
@@ -47,17 +48,21 @@ class IntakeSlotModel extends ChangeNotifier {
 
   void clear(DayPart dayPart) {
     amounts[dayPart] = 0;
+    reminders[dayPart] = false;
     notifyListeners();
   }
 
   void toggleReminder(DayPart dayPart) {
+    if ((amounts[dayPart] ?? 0) <= 0) {
+      return;
+    }
     reminders[dayPart] = !(reminders[dayPart] ?? false);
     notifyListeners();
   }
 
   void setIntake(DayPart dayPart, double amount, bool isEnabled) {
     amounts[dayPart] = amount;
-    reminders[dayPart] = isEnabled;
+    reminders[dayPart] = amount > 0 ? isEnabled : false;
     notifyListeners();
   }
 

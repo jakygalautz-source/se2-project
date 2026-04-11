@@ -15,10 +15,7 @@ class _MedicationListPageState extends State<MedicationListPage> {
   @override
   void initState() {
     super.initState();
-
-    Future.microtask(() {
-      context.read<MedicationListModel>().loadMedications();
-    });
+    context.read<MedicationListModel>().loadMedications();
   }
 
   @override
@@ -40,8 +37,8 @@ class _MedicationListPageState extends State<MedicationListPage> {
 
                 return MyMedicationListCard(
                   medication: medication,
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => MedicationPage(
@@ -50,6 +47,8 @@ class _MedicationListPageState extends State<MedicationListPage> {
                         ),
                       ),
                     );
+                    if (!mounted) return;
+                    await model.loadMedications();
                   },
                 );
               },
