@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/models/intake_slot_model.dart';
+import 'package:pill_pilot/models/medication_model.dart';
 
 class MedicationFormModel extends ChangeNotifier {
   final IntakeSlotModel intakeSlotModel;
@@ -54,18 +55,29 @@ class MedicationFormModel extends ChangeNotifier {
     return {'name': medicationName.trim(), 'intakes': getIntakesAsList()};
   }
 
+  void loadMedication(Medication medication) {
+    medicationName = medication.name;
+
+    intakeSlotModel.resetAll();
+
+    for (final intake in medication.intakes) {
+      final matchingDayPart = DayPart.values.firstWhere(
+        (dayPart) => dayPart.name == intake.dayPart,
+      );
+
+      intakeSlotModel.setIntake(
+        matchingDayPart,
+        intake.amount,
+        intake.reminder,
+      );
+    }
+    notifyListeners();
+  }
+
   // alles zurücksetzen z.B. nach dem erfolgreichen speichern
   void reset() {
     medicationName = '';
-
-    for (final dayPart in DayPart.values) {
-      intakeSlotModel.clear(dayPart);
-
-      if (intakeSlotModel.isReminderEnabled(dayPart)) {
-        intakeSlotModel.toggleReminder(dayPart);
-      }
-    }
-
+    intakeSlotModel.resetAll();
     notifyListeners();
   }
 

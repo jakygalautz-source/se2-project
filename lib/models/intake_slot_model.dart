@@ -55,5 +55,17 @@ class IntakeSlotModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetAll() {}
+  void setIntake(DayPart dayPart, double amount, bool isEnabled) {
+    amounts[dayPart] = amount;
+    reminders[dayPart] = isEnabled;
+    notifyListeners();
+  }
+
+  void resetAll() {
+    for (final dayPart in DayPart.values) {
+      amounts[dayPart] = 0;
+      reminders[dayPart] = false;
+    }
+    notifyListeners();
+  }
 }

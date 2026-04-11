@@ -29,9 +29,10 @@ backend/
 3. Beim Speichern:
    - toJson() erzeugt JSON
    - MedicationApi.saveMedication() sendet Daten an das Backend
+4. In der MedicationListPage werden Medikamente über das MedicationListModel geladen
+5. Das MedicationListModel verwendet MedicationApi.getMedications()
+6. Falls das Backend nicht erreichbar ist, werden Fake-Daten geladen
 
-Fallback:
-Wenn das Backend nicht erreichbar ist, wird stattdessen ein kurzer Fake-Delay verwendet.
 
 ---
 
@@ -42,6 +43,7 @@ POST /medications
 
 ### Beispiel-JSON
 
+```json
 {
   "name": "Ibuprofen",
   "intakes": [
@@ -52,6 +54,7 @@ POST /medications
     }
   ]
 }
+```
 
 ### Base URL (Development)
 http://10.0.2.2:8000
@@ -74,7 +77,7 @@ Hinweis:
 - zeigt vorhandene Medikamente in einer Liste
 - verwendet aktuell noch Fake-Daten
 - dient später als Übersicht geladener Medikamente aus dem Backend
-- Medikamente sollen per Tap zur Bearbeitung in die MedicationPage öffnen
+- Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
 - TODO Landscape-Layout
 
 ### MedicationPage
@@ -89,11 +92,17 @@ Hinweis:
 - speichert Eingaben temporär im Frontend
 - validiert Daten
 - erstellt JSON mit toJson() für Backend-Kommunikation
-- TODO kann später für Add- UND Edit-Flow verwendet werden
+- wird für Add- UND Edit-Flow verwendet werden
+
+### MedicationListModel
+- verwaltet den Zustand der Medikamentenliste
+- lädt Medikamente über API
+- verwendet Fake-Daten als Fallback, wenn das Backend noch nicht erreichbar ist
 
 ### MedicationApi
 - zuständig für HTTP-Requests
 - sendet Daten an das Backend
+- lädt Medikamentendaten aus dem Backend
 
 ---
 

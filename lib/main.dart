@@ -5,7 +5,8 @@ import 'package:pill_pilot/pages/home_page.dart';
 import 'package:pill_pilot/pages/medication_list_page.dart';
 import 'package:pill_pilot/pages/medication_page.dart';
 import 'package:provider/provider.dart';
-import 'package:pill_pilot/pages/test_page.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
+// import 'package:pill_pilot/pages/test_page.dart';
 
 void main() {
   runApp(
@@ -19,6 +20,7 @@ void main() {
           update: (context, intakeSlotModel, previous) =>
               previous ?? MedicationFormModel(intakeSlotModel: intakeSlotModel),
         ),
+        ChangeNotifierProvider(create: (context) => MedicationListModel()),
       ],
       child: const MainApp(),
     ),

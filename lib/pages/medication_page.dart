@@ -7,10 +7,13 @@ import 'package:pill_pilot/widgets/my_textfield.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
+import 'package:pill_pilot/models/medication_model.dart';
 
 class MedicationPage extends StatefulWidget {
   final bool isEditMode;
-  const MedicationPage({super.key, this.isEditMode = false});
+  final Medication? medication;
+
+  const MedicationPage({super.key, this.isEditMode = false, this.medication});
 
   @override
   State<MedicationPage> createState() => _MedicationPageState();
@@ -21,6 +24,17 @@ class _MedicationPageState extends State<MedicationPage> {
       TextEditingController();
 
   bool isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.medication != null) {
+      final medicationFormModel = context.read<MedicationFormModel>();
+      medicationFormModel.loadMedication(widget.medication!);
+      medicationNameController.text = widget.medication!.name;
+    }
+  }
 
   @override
   void dispose() {
@@ -52,7 +66,7 @@ class _MedicationPageState extends State<MedicationPage> {
     try {
       await MedicationApi.saveMedication(medicationFormModel.toJson());
     } catch (_) {
-      // FAKE: hier folgt ein fake-baclkend-delay TODO ersetzen mit Backend-Kommunikation
+      // FAKE: hier folgt ein fake-baclkend-delay
       await Future.delayed(const Duration(milliseconds: 500));
     }
 

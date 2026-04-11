@@ -11,7 +11,7 @@ class MyMedicationListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, '/medication_page'),
+      onTap: onTap,
       child: MyCard(
         border: Border.all(width: 1),
         child: Column(

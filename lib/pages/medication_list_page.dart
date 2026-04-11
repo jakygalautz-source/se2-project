@@ -1,46 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:pill_pilot/pages/medication_page.dart';
 import 'package:pill_pilot/widgets/my_medication_list_card.dart';
-import 'package:pill_pilot/models/medication_intake_model.dart';
-import 'package:pill_pilot/models/medication_model.dart';
+import 'package:provider/provider.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
 
-class MedicationListPage extends StatelessWidget {
+class MedicationListPage extends StatefulWidget {
   const MedicationListPage({super.key});
 
   @override
+  State<MedicationListPage> createState() => _MedicationListPageState();
+}
+
+class _MedicationListPageState extends State<MedicationListPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context.read<MedicationListModel>().loadMedications();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final medications = [
-      Medication(
-        name: 'Mexalen',
-        intakes: [
-          MedicationIntakeModel(
-            dayPart: 'morning',
-            amount: 2.0,
-            reminder: true,
-          ),
-          MedicationIntakeModel(dayPart: 'evening', amount: 1, reminder: false),
-        ],
-      ),
-      Medication(
-        name: 'Ibuprofen',
-        intakes: [
-          MedicationIntakeModel(dayPart: 'noon', amount: 1.0, reminder: true),
-        ],
-      ),
-    ];
+    final model = context.watch<MedicationListModel>();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Meine Medikamente")),
-      body: medications.isEmpty
+      body: model.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : model.isEmpty
           ? const Center(child: Text('Noch keine Medikamente vorhanden'))
           : ListView.separated(
               padding: const EdgeInsets.all(20),
-              itemCount: medications.length,
+              itemCount: model.medications.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
+                final medication = model.medications[index];
+
                 return MyMedicationListCard(
-                  medication: medications[index],
+                  medication: medication,
                   onTap: () {
-                    // hier werde ich navigieren zu medication_page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MedicationPage(
+                          isEditMode: true,
+                          medication: medication,
+                        ),
+                      ),
+                    );
                   },
                 );
               },
