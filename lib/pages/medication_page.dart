@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pill_pilot/api/medication_api.dart';
 import 'package:pill_pilot/widgets/intake_slot_card.dart';
 import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/widgets/change_time_button.dart';
@@ -48,10 +49,12 @@ class _MedicationPageState extends State<MedicationPage> {
 
     setState(() => isSaving = true);
 
-    debugPrint(medicationFormModel.toJson().toString());
-
-    // FAKE: hier folgt ein fake-baclkend-delay TODO ersetzen mit Backend-Kommunikation
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      await MedicationApi.saveMedication(medicationFormModel.toJson());
+    } catch (_) {
+      // FAKE: hier folgt ein fake-baclkend-delay TODO ersetzen mit Backend-Kommunikation
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
 
     if (!mounted) {
       return;
