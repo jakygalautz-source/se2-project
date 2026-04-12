@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/api/reminder_time_api.dart';
+import 'package:provider/provider.dart';
 
 class ChangeTimeButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -17,8 +20,20 @@ class ChangeTimeButton extends StatelessWidget {
         ),
         elevation: 2,
       ),
-      onPressed: () {
-        // hier wird später gespeichert
+      onPressed: () async {
+        final reminderTimeModel = context.read<ReminderTimeModel>();
+        final navigator = Navigator.of(context);
+
+        try {
+          final data = await ReminderTimeApi.getReminderTimes();
+          reminderTimeModel.loadFromJson(data);
+        } catch (_) {
+          // fallback → default Zeiten bleiben
+        }
+
+        if (!context.mounted) return;
+
+        await navigator.pushNamed('/reminder_time_page');
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

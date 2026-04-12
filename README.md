@@ -32,6 +32,10 @@ backend/
 4. In der MedicationListPage werden Medikamente über das MedicationListModel geladen
 5. Das MedicationListModel verwendet MedicationApi.getMedications()
 6. Falls das Backend nicht erreichbar ist, werden Fake-Daten geladen
+7. Beim Öffnen der ReminderTimePage werden bestehende Erinnerungszeiten zuerst über die ReminderTimeApi aus dem Backend geladen
+8. Die geladenen Zeiten werden im ReminderTimeModel gespeichert
+9. In der ReminderTimePage können die vier globalen Erinnerungszeiten bearbeitet werden
+10. Beim Speichern werden die Zeiten mit toJson() vorbereitet und über die ReminderTimeApi an das Backend gesendet
 
 
 ---
@@ -56,6 +60,24 @@ POST /medications
 }
 ```
 
+### Weitere Endpoints
+GET /reminder-times  
+POST /reminder-times
+
+### Beispiel-JSON für Erinnerungszeiten
+
+```json
+{
+  "morning": "08:00",
+  "noon": "12:00",
+  "evening": "17:00",
+  "night": "21:00"
+}
+```
+### Verwendung
+GET /reminder-times lädt die aktuell gespeicherten globalen Erinnerungszeiten
+POST /reminder-times speichert geänderte Erinnerungszeiten
+
 ### Base URL (Development)
 http://10.0.2.2:8000
 
@@ -78,13 +100,14 @@ Hinweis:
 - verwendet aktuell noch Fake-Daten
 - dient später als Übersicht geladener Medikamente aus dem Backend
 - Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
-- TODO Landscape-Layout
+- unterstützt Portrait- und Landscape-Layout
+- verwendet im Landscape-Modus eine zeilenbasierte Darstellung mit zwei Karten nebeneinander
 
 ### MedicationPage
 - UI für die Eingabe und Bearbeitung von Medikamente
 - wird für neue und bestehende Medikamente verwendet
 - enthält Save-Logik
-- zeigt Feedback über Snackbar
+- lädt nach dem Speichern die Medikamentenliste neu und navigiert zurück zur Übersicht
 - unterstützt Portrait- und Landscape-Layout
 
 ### MedicationFormModel
@@ -103,6 +126,35 @@ Hinweis:
 - zuständig für HTTP-Requests
 - sendet Daten an das Backend
 - lädt Medikamentendaten aus dem Backend
+
+### ReminderTimePage
+- UI für die Bearbeitung der vier globalen Erinnerungszeiten
+- zeigt Morgens, Mittags, Abends und Nachts als bearbeitbare Zeit-Slots
+- verwendet einen TimePicker zur Auswahl der Uhrzeit
+- speichert Änderungen über SaveButton
+- unterstützt Portrait- und Landscape-Layout
+
+### ReminderTimeModel
+- verwaltet die vier globalen Erinnerungszeiten im Frontend
+- speichert Zeiten als TimeOfDay pro DayPart
+- stellt getTime() und setTime() bereit
+- erzeugt mit toJson() das JSON für die Backend-Kommunikation
+- kann geladene Backend-Daten mit loadFromJson() übernehmen
+
+### ReminderTimeApi
+- zuständig für HTTP-Requests rund um Erinnerungszeiten
+- lädt gespeicherte Zeiten mit GET /reminder-times
+- speichert geänderte Zeiten mit POST /reminder-times
+
+---
+
+## Navigation
+
+- Die Navigation erfolgt über benannte Routen und direkte Navigation per Navigator
+- Von der HomePage aus kann zur MedicationPage, MedicationListPage, ReminderTimePage und zu weiteren Bereichen navigiert werden
+- Beim Öffnen der ReminderTimePage werden die gespeicherten Zeiten zuerst aus dem Backend geladen und danach die Seite geöffnet
+- Beim Speichern in der ReminderTimePage wird zur vorherigen Seite zurück navigiert
+- Beim Speichern in der MedicationPage wird die Medikamentenliste aktualisiert und danach zurück zur MedicationListPage navigiert
 
 ---
 

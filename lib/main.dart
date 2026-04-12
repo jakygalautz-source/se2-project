@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/intake_slot_model.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
 import 'package:pill_pilot/pages/home_page.dart';
 import 'package:pill_pilot/pages/medication_list_page.dart';
 import 'package:pill_pilot/pages/medication_page.dart';
+import 'package:pill_pilot/pages/reminder_time_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
 // import 'package:pill_pilot/pages/test_page.dart';
@@ -21,6 +23,7 @@ void main() {
               previous ?? MedicationFormModel(intakeSlotModel: intakeSlotModel),
         ),
         ChangeNotifierProvider(create: (context) => MedicationListModel()),
+        ChangeNotifierProvider(create: (context) => ReminderTimeModel()),
       ],
       child: const MainApp(),
     ),
@@ -58,6 +61,7 @@ class MainApp extends StatelessWidget {
         '/home_page': (context) => HomePage(),
         '/medication_page': (context) => MedicationPage(),
         '/medication_list_page': (context) => MedicationListPage(),
+        '/reminder_time_page': (context) => ReminderTimePage(),
       },
     );
   }
