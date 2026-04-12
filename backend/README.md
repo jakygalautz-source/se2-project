@@ -41,3 +41,29 @@ Expected response:
   }
 ]
 ```
+
+--------------------------------------
+## HOW TO
+--------------------------------------
+
+-Start main.py 
+-Open Terminal
+-type:
+python main.py
+
+-Open:
+http://127.0.0.1:8000
+response: {"message":"Backend läuft"}
+
+## EP-Checkpoint
+http://127.0.0.1:8000/docs
+
+
+
+
+
+
+
+
+
+uvicorn main:app --reload
