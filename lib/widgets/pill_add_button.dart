@@ -22,7 +22,7 @@ class PillAddButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 24, 227, 166),
               borderRadius: BorderRadius.circular(20),

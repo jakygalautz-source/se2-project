@@ -77,6 +77,12 @@ class IntakeSlotCard extends StatelessWidget {
                         child: Icon(Icons.delete_outline, size: 30),
                       ),
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Menge\nlöschen",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ],
                 ),
               ],
