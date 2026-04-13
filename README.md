@@ -97,7 +97,8 @@ Hinweis:
 
 ### MedicationListPage
 - zeigt vorhandene Medikamente in einer Liste
-- verwendet aktuell noch Fake-Daten
+- lädt Daten aus dem Backend
+- verwendet Fake-Daten als Fallback, wenn das Backend nicht erreichbar ist
 - dient später als Übersicht geladener Medikamente aus dem Backend
 - Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
 - unterstützt Portrait- und Landscape-Layout
@@ -115,7 +116,15 @@ Hinweis:
 - speichert Eingaben temporär im Frontend
 - validiert Daten
 - erstellt JSON mit toJson() für Backend-Kommunikation
-- wird für Add- UND Edit-Flow verwendet werden
+- wird für Add- UND Edit-Flow verwendet
+
+### Validierung
+- Ein Medikament kann nur gespeichert werden, wenn:
+  - ein Name eingegeben wurde
+  - mindestens eine Einnahme vorhanden ist
+- Zusätzlich wird geprüft, ob bereits ein Medikament mit dem gleichen Namen existiert
+- Der Vergleich erfolgt unabhängig von Groß-/Kleinschreibung und Leerzeichen
+- Duplikate werden verhindert (außer im Bearbeitungsmodus)
 
 ### MedicationListModel
 - verwaltet den Zustand der Medikamentenliste
@@ -150,11 +159,9 @@ Hinweis:
 
 ## Navigation
 
-- Die Navigation erfolgt über benannte Routen und direkte Navigation per Navigator
+- Die Navigation erfolgt über benannte Routen und Navigator
 - Von der HomePage aus kann zur MedicationPage, MedicationListPage, ReminderTimePage und zu weiteren Bereichen navigiert werden
-- Beim Öffnen der ReminderTimePage werden die gespeicherten Zeiten zuerst aus dem Backend geladen und danach die Seite geöffnet
-- Beim Speichern in der ReminderTimePage wird zur vorherigen Seite zurück navigiert
-- Beim Speichern in der MedicationPage wird die Medikamentenliste aktualisiert und danach zurück zur MedicationListPage navigiert
+- Nach dem Speichern wird jeweils zur vorherigen Seite bzw. zur Übersicht zurück navigiert
 
 ---
 
