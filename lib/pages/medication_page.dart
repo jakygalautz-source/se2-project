@@ -47,6 +47,9 @@ class _MedicationPageState extends State<MedicationPage> {
     // async weil ich später "await" nutze
     final medicationFormModel = context.read<MedicationFormModel>();
     final medicationListModel = context.read<MedicationListModel>();
+    final normalizedName = medicationFormModel.medicationName
+        .trim()
+        .toLowerCase();
     final navigator = Navigator.of(context);
 
     if (!medicationFormModel.isValid) {
@@ -62,6 +65,27 @@ class _MedicationPageState extends State<MedicationPage> {
         ),
       );
       return;
+    }
+
+    if (!widget.isEditMode) {
+      final alreadyExists = medicationListModel.medications.any(
+        (medication) => medication.name.trim().toLowerCase() == normalizedName,
+      );
+
+      if (alreadyExists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Dieses Medikament ist bereits vorhanden"),
+            backgroundColor: Colors.grey,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        );
+        return;
+      }
     }
 
     setState(() => isSaving = true);
