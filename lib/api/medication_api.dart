@@ -41,4 +41,14 @@ class MedicationApi {
         .map((item) => Medication.fromJson(item as Map<String, dynamic>))
         .toList();
   }
+
+  static Future<void> deleteMedication(int id) async {
+    final url = Uri.parse("$baseUrl/medications/$id");
+
+    final response = await http.delete(url).timeout(const Duration(seconds: 2));
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      throw Exception();
+    }
+  }
 }

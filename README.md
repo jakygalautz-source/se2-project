@@ -61,8 +61,15 @@ POST /medications
 ```
 
 ### Weitere Endpoints
+GET /medications  
+DELETE /medications/{id}  
 GET /reminder-times  
 POST /reminder-times
+
+### Hinweis zu IDs
+- Jedes Medikament wird über eine eindeutige `id` identifiziert
+- Die `id` wird vom Backend bereitgestellt
+- Sie wird im Frontend für Bearbeiten und Löschen verwendet
 
 ### Beispiel-JSON für Erinnerungszeiten
 
@@ -99,8 +106,9 @@ Hinweis:
 - zeigt vorhandene Medikamente in einer Liste
 - lädt Daten aus dem Backend
 - verwendet Fake-Daten als Fallback, wenn das Backend nicht erreichbar ist
-- dient später als Übersicht geladener Medikamente aus dem Backend
+- dient als Übersicht geladener Medikamente aus dem Backend
 - Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
+- ermöglicht das Löschen von Medikamenten über einen DeleteButton
 - unterstützt Portrait- und Landscape-Layout
 - verwendet im Landscape-Modus eine zeilenbasierte Darstellung mit zwei Karten nebeneinander
 

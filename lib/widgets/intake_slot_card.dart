@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/intake_slot_model.dart';
+import 'package:pill_pilot/widgets/delete_button.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/widgets/pill_add_button.dart';
@@ -64,18 +65,8 @@ class IntakeSlotCard extends StatelessWidget {
                       "${intakeSlotModel.getAmount(dayPart)} ${intakeSlotModel.getUnitText(dayPart)}",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () => intakeSlotModel.clear(dayPart),
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(Icons.delete_outline, size: 30),
-                      ),
-                    ),
+                    const SizedBox(height: 12), //
+                    DeleteButton(onTap: () => intakeSlotModel.clear(dayPart)),
                     const SizedBox(height: 4),
                     Text(
                       "Menge\nlöschen",

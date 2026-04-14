@@ -7,6 +7,7 @@ class MedicationFormModel extends ChangeNotifier {
   final IntakeSlotModel intakeSlotModel;
 
   String medicationName = '';
+  int? medicationId;
 
   MedicationFormModel({required this.intakeSlotModel}) {
     intakeSlotModel.addListener(_onIntakeChanged);
@@ -52,11 +53,16 @@ class MedicationFormModel extends ChangeNotifier {
 
   //JSON bauen
   Map<String, dynamic> toJson() {
-    return {'name': medicationName.trim(), 'intakes': getIntakesAsList()};
+    return {
+      'id': medicationId,
+      'name': medicationName.trim(),
+      'intakes': getIntakesAsList(),
+    };
   }
 
   void loadMedication(Medication medication) {
     medicationName = medication.name;
+    medicationId = medication.id;
 
     intakeSlotModel.resetAll();
 
@@ -77,6 +83,7 @@ class MedicationFormModel extends ChangeNotifier {
   // alles zurücksetzen z.B. nach dem erfolgreichen speichern
   void reset() {
     medicationName = '';
+    medicationId = null;
     intakeSlotModel.resetAll();
     notifyListeners();
   }

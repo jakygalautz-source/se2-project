@@ -30,6 +30,7 @@ Expected response:
 ```json
 [
   {
+    "id": 1,
     "name": "Ibuprofen",
     "intakes": [
       {
@@ -41,6 +42,18 @@ Expected response:
   }
 ]
 ```
+## Notes
+Each medication should include a unique id
+The id is used in the frontend for editing and deleting medications
+
+### DELETE /medications/{id}
+
+Used to delete a specific medication by its ID.
+
+Expected:
+- Removes the medication from storage
+- Response: 200 or 204
+
 
 ## Reminder Times (additional endpoints)
 ### GET /reminder-times

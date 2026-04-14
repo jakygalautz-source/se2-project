@@ -65,6 +65,23 @@ class _MedicationListPageState extends State<MedicationListPage> {
                 if (!mounted) return;
                 await model.loadMedications();
               },
+              onDelete: () async {
+                try {
+                  await model.removeMedication(medication!);
+                } catch (_) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                        "Medikament konnte nicht gelöscht werden",
+                      ),
+                      backgroundColor: Colors.grey.shade800,
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(16),
+                    ),
+                  );
+                }
+              },
             );
           },
         ),
@@ -109,6 +126,23 @@ class _MedicationListPageState extends State<MedicationListPage> {
                         if (!mounted) return;
                         await model.loadMedications();
                       },
+                      onDelete: () async {
+                        try {
+                          await model.removeMedication(leftMedication);
+                        } catch (_) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                "Medikament konnte nicht gelöscht werden",
+                              ),
+                              backgroundColor: Colors.grey.shade800,
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(16),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -128,6 +162,23 @@ class _MedicationListPageState extends State<MedicationListPage> {
                               );
                               if (!mounted) return;
                               await model.loadMedications();
+                            },
+                            onDelete: () async {
+                              try {
+                                await model.removeMedication(rightMedication!);
+                              } catch (_) {
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text(
+                                      "Medikament konnte nicht gelöscht werden",
+                                    ),
+                                    backgroundColor: Colors.grey.shade800,
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(16),
+                                  ),
+                                );
+                              }
                             },
                           )
                         : const SizedBox(),

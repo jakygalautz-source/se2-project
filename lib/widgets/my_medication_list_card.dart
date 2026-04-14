@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/medication_model.dart';
+import 'package:pill_pilot/widgets/delete_button.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 
 class MyMedicationListCard extends StatelessWidget {
   final Medication medication;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
 
-  const MyMedicationListCard({super.key, required this.medication, this.onTap});
+  const MyMedicationListCard({
+    super.key,
+    required this.medication,
+    this.onTap,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class MyMedicationListCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                const Icon(Icons.edit_outlined, size: 22),
+                DeleteButton(onTap: onDelete),
               ],
             ),
             const SizedBox(height: 12),
