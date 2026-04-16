@@ -135,15 +135,9 @@ class _MedicationListPageState extends State<MedicationListPage> {
                           await model.removeMedication(leftMedication);
                         } catch (_) {
                           if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text(
-                                "Medikament konnte nicht gelöscht werden",
-                              ),
-                              backgroundColor: Colors.grey.shade800,
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(16),
-                            ),
+                          MySnackbar.show(
+                            context,
+                            message: "Medikament konnte nicht gelöscht werden",
                           );
                         }
                       },
@@ -172,15 +166,10 @@ class _MedicationListPageState extends State<MedicationListPage> {
                                 await model.removeMedication(rightMedication!);
                               } catch (_) {
                                 if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: const Text(
+                                MySnackbar.show(
+                                  context,
+                                  message:
                                       "Medikament konnte nicht gelöscht werden",
-                                    ),
-                                    backgroundColor: Colors.grey.shade800,
-                                    behavior: SnackBarBehavior.floating,
-                                    margin: const EdgeInsets.all(16),
-                                  ),
                                 );
                               }
                             },

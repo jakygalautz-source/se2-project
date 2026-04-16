@@ -9,6 +9,7 @@ import 'package:pill_pilot/pages/reminder_time_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/pages/app_entry_page.dart';
+import 'package:pill_pilot/pages/settings_page.dart';
 // import 'package:pill_pilot/pages/test_page.dart';
 
 void main() {
@@ -64,6 +65,7 @@ class MainApp extends StatelessWidget {
         '/medication_page': (context) => MedicationPage(),
         '/medication_list_page': (context) => MedicationListPage(),
         '/reminder_time_page': (context) => ReminderTimePage(),
+        '/settings_page': (context) => const SettingsPage(),
       },
     );
   }

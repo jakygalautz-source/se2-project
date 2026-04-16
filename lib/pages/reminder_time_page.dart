@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/models/reminder_time_model.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
+import 'package:pill_pilot/widgets/my_snackbar.dart';
 
 class ReminderTimePage extends StatefulWidget {
   const ReminderTimePage({super.key});
@@ -25,15 +26,11 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erinnerungszeiten gespeichert')),
-      );
+      MySnackbar.show(context, message: "Erinnerungszeiten wurden gespeichert");
     } catch (_) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Backend nicht erreichbar (Testmodus)')),
-      );
+      MySnackbar.show(context, message: "Backend nicht erreichbar (Testmodus)");
     }
 
     // immer zurück (auch bei Fehler)
