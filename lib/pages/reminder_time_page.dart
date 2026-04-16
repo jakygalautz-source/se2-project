@@ -101,7 +101,10 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Text(_label(dayPart)),
+        title: Text(
+          _label(dayPart),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

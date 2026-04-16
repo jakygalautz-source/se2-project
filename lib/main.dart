@@ -8,6 +8,7 @@ import 'package:pill_pilot/pages/medication_page.dart';
 import 'package:pill_pilot/pages/reminder_time_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/pages/app_entry_page.dart';
 // import 'package:pill_pilot/pages/test_page.dart';
 
 void main() {
@@ -55,7 +56,8 @@ class MainApp extends StatelessWidget {
       ),
 
       // home: TestPage(),
-      home: HomePage(),
+      // home: HomePage(),
+      home: AppEntryPage(),
 
       routes: {
         '/home_page': (context) => HomePage(),

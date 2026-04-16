@@ -12,7 +12,10 @@ class SettingsCard extends StatelessWidget {
         children: [
           Icon(Icons.settings_outlined, color: Colors.black),
           SizedBox(width: 10),
-          Text("Einstellungen", style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            "Profileinstellungen",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ],
       ),
     );
