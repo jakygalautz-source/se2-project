@@ -32,10 +32,13 @@ backend/
 4. In der MedicationListPage werden Medikamente über das MedicationListModel geladen
 5. Das MedicationListModel verwendet MedicationApi.getMedications()
 6. Falls das Backend nicht erreichbar ist, werden Fake-Daten geladen
-7. Beim Öffnen der ReminderTimePage werden bestehende Erinnerungszeiten zuerst über die ReminderTimeApi aus dem Backend geladen
-8. Die geladenen Zeiten werden im ReminderTimeModel gespeichert
-9. In der ReminderTimePage können die vier globalen Erinnerungszeiten bearbeitet werden
-10. Beim Speichern werden die Zeiten mit toJson() vorbereitet und über die ReminderTimeApi an das Backend gesendet
+7. Beim Start der App wird die AppEntryPage geladen
+8. Die AppEntryPage lädt initiale Daten aus dem Backend (z. B. Erinnerungszeiten)
+9. Die geladenen Zeiten werden im ReminderTimeModel gespeichert
+10. Alle relevanten UI-Komponenten (z. B. IntakeSlotCard) greifen auf das ReminderTimeModel zu
+11. Änderungen an Erinnerungszeiten werden über notifyListeners() sofort in der UI aktualisiert
+12. In der ReminderTimePage können die vier globalen Erinnerungszeiten bearbeitet werden
+13. Beim Speichern werden die Zeiten mit toJson() vorbereitet und über die ReminderTimeApi an das Backend gesendet
 
 
 ---
@@ -95,6 +98,14 @@ Hinweis:
 
 ## Wichtige Komponenten
 
+### AppEntryPage
+- zentrale Einstiegskomponente der App
+- wird beim Start der App geladen (anstelle der HomePage)
+- lädt initiale Daten aus dem Backend (z. B. Erinnerungszeiten)
+- speichert diese im entsprechenden Model (z. B. ReminderTimeModel)
+- zeigt während des Ladevorgangs einen Ladeindikator
+- dient als Vorbereitung für zukünftige Erweiterungen wie Login/Authentifizierung
+
 ### HomePage
 - Startseite der App
 - Einstiegspunkt für die wichtigsten Funktionen
@@ -110,6 +121,7 @@ Hinweis:
 - Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
 - ermöglicht das Löschen von Medikamenten über einen DeleteButton
 - unterstützt Portrait- und Landscape-Layout
+- enthält einen Floating Action Button (FAB) zum Hinzufügen neuer Medikamente
 - verwendet im Landscape-Modus eine zeilenbasierte Darstellung mit zwei Karten nebeneinander
 
 ### MedicationPage
@@ -150,6 +162,7 @@ Hinweis:
 - verwendet einen TimePicker zur Auswahl der Uhrzeit
 - speichert Änderungen über SaveButton
 - unterstützt Portrait- und Landscape-Layout
+- die definierten Zeiten werden global in der App verwendet (z. B. Anzeige in IntakeSlotCard)
 
 ### ReminderTimeModel
 - verwaltet die vier globalen Erinnerungszeiten im Frontend
@@ -157,6 +170,7 @@ Hinweis:
 - stellt getTime() und setTime() bereit
 - erzeugt mit toJson() das JSON für die Backend-Kommunikation
 - kann geladene Backend-Daten mit loadFromJson() übernehmen
+- Änderungen an Zeiten werden über notifyListeners() automatisch in allen abhängigen UI-Komponenten aktualisiert
 
 ### ReminderTimeApi
 - zuständig für HTTP-Requests rund um Erinnerungszeiten
@@ -178,6 +192,8 @@ Hinweis:
 - Save-Flow verwendet API + Fallback
 - State Management über Provider
 - UI und Logik sind bewusst getrennt
+- Einheitliches Snackbar-Handling über zentrale MySnackBar-Klasse
+- sorgt für konsistentes UI-Feedback bei Aktionen wie Speichern, Fehlern oder Validierung
 
 ---
 
