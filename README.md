@@ -177,6 +177,15 @@ Hinweis:
 - lädt gespeicherte Zeiten mit GET /reminder-times
 - speichert geänderte Zeiten mit POST /reminder-times
 
+### SettingsPage
+- UI-Grundgerüst für die Profileinstellungen
+- enthält Felder für Benutzername, E-Mail-Adresse, neues Passwort und Passwortbestätigung
+- verwendet bestehende UI-Komponenten wie MyCard, SaveButton und MySnackbar
+- unterstützt Portrait- und Landscape-Layout
+- aktueller Stand ist ein Frontend-Scaffold ohne fertige Backend-Anbindung
+- dient als Vorbereitung für spätere Erweiterungen wie SettingsModel, API-Anbindung und Validierung
+
+
 ---
 
 ## Navigation
@@ -194,6 +203,7 @@ Hinweis:
 - UI und Logik sind bewusst getrennt
 - Einheitliches Snackbar-Handling über zentrale MySnackBar-Klasse
 - sorgt für konsistentes UI-Feedback bei Aktionen wie Speichern, Fehlern oder Validierung
+- SettingsPage wurde zunächst als UI-Scaffold umgesetzt, um Layout und Benutzerfluss vor der Backend-Anbindung festzulegen
 
 ---
 
