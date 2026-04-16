@@ -3,6 +3,7 @@ import 'package:pill_pilot/pages/medication_page.dart';
 import 'package:pill_pilot/widgets/my_medication_list_card.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/widgets/my_snackbar.dart';
 
 class MedicationListPage extends StatefulWidget {
   const MedicationListPage({super.key});
@@ -34,6 +35,14 @@ class _MedicationListPageState extends State<MedicationListPage> {
             : isLandscape
             ? _buildLandscape(context, model)
             : _buildPortrait(context, model),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/medication_page');
+        },
+        backgroundColor: const Color.fromARGB(255, 155, 233, 209),
+        icon: const Icon(Icons.add),
+        label: const Text("Hinzufügen"),
       ),
     );
   }
@@ -67,18 +76,13 @@ class _MedicationListPageState extends State<MedicationListPage> {
               },
               onDelete: () async {
                 try {
-                  await model.removeMedication(medication!);
+                  await model.removeMedication(medication);
                 } catch (_) {
                   if (!mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text(
-                        "Medikament konnte nicht gelöscht werden",
-                      ),
-                      backgroundColor: Colors.grey.shade800,
-                      behavior: SnackBarBehavior.floating,
-                      margin: const EdgeInsets.all(16),
-                    ),
+                  MySnackbar.show(
+                    context,
+                    message: "Medikament konnte nicht gelöscht werden",
+                    backgroundColor: Colors.grey.shade800,
                   );
                 }
               },

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_form_model.dart';
 import 'package:pill_pilot/models/medication_model.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/widgets/my_snackbar.dart';
 
 class MedicationPage extends StatefulWidget {
   final bool isEditMode;
@@ -53,16 +54,10 @@ class _MedicationPageState extends State<MedicationPage> {
     final navigator = Navigator.of(context);
 
     if (!medicationFormModel.isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Bitte alle Felder ausfüllen"),
-          backgroundColor: Colors.grey.shade800,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+      MySnackbar.show(
+        context,
+        message: "Bitte alle Felder ausfüllen",
+        backgroundColor: Colors.grey.shade800,
       );
       return;
     }
@@ -73,16 +68,10 @@ class _MedicationPageState extends State<MedicationPage> {
       );
 
       if (alreadyExists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Dieses Medikament ist bereits vorhanden"),
-            backgroundColor: Colors.grey,
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
+        MySnackbar.show(
+          context,
+          message: "Dieses Medikament ist bereits vorhanden",
+          backgroundColor: Colors.grey,
         );
         return;
       }

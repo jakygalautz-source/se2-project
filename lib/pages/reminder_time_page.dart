@@ -17,20 +17,33 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
 
   void _handleSave() async {
     final model = context.read<ReminderTimeModel>();
-    final navigator = Navigator.of(context);
 
     setState(() => isSaving = true);
+
     try {
       await ReminderTimeApi.saveReminderTimes(model.toJson());
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erinnerungszeiten gespeichert')),
+      );
     } catch (_) {
-      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Backend nicht erreichbar (Testmodus)')),
+      );
     }
 
+    // immer zurück (auch bei Fehler)
     if (!mounted) return;
 
     Navigator.pop(context);
 
-    setState(() => isSaving = false);
+    if (mounted) {
+      setState(() => isSaving = false);
+    }
   }
 
   @override

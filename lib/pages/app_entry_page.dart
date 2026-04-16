@@ -26,7 +26,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
 
       if (!mounted) return;
 
-      context.read<ReminderTimeModel>().loadfromJson(reminderData);
+      context.read<ReminderTimeModel>().loadFromJson(reminderData);
     } catch (_) {
       // falls das laden nicht klappt bleiben die default zeiten drin
     }
