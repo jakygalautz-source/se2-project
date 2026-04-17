@@ -41,6 +41,19 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
+        primaryColor: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            elevation: 2,
+          ),
+        ),
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 26,
@@ -53,6 +66,11 @@ class MainApp extends StatelessWidget {
             color: Colors.black,
           ),
           bodyMedium: TextStyle(fontSize: 16, color: Colors.black87),
+        ),
+
+        timePickerTheme: const TimePickerThemeData(
+          dialHandColor: Colors.blue,
+          entryModeIconColor: Colors.blue,
         ),
       ),
 

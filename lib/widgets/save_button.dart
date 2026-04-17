@@ -10,15 +10,6 @@ class SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: isLoading ? null : onTap,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 24, 227, 166),
-        foregroundColor: Colors.black,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(20),
-        ),
-        elevation: 2,
-      ),
 
       child: isLoading
           ? const SizedBox(

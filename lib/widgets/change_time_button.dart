@@ -12,7 +12,7 @@ class ChangeTimeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 155, 233, 209),
+        backgroundColor: Color(0xFFE8F0FF),
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(

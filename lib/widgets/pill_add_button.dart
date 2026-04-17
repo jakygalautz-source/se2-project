@@ -15,7 +15,7 @@ class PillAddButton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 155, 233, 209),
+        color: const Color.fromARGB(255, 151, 185, 249),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -26,7 +26,7 @@ class PillAddButton extends StatelessWidget {
               label: "+1",
               imagePath: "lib/images/pill.png",
               onTap: onAddFull,
-              backgroundColor: const Color.fromARGB(255, 24, 227, 166),
+              backgroundColor: Colors.blue,
             ),
           ),
           const SizedBox(width: 6),

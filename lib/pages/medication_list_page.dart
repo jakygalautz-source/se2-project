@@ -40,9 +40,20 @@ class _MedicationListPageState extends State<MedicationListPage> {
         onPressed: () {
           Navigator.pushNamed(context, '/medication_page');
         },
-        backgroundColor: const Color.fromARGB(255, 155, 233, 209),
-        icon: const Icon(Icons.add),
-        label: const Text("Hinzufügen"),
+        backgroundColor: const Color.fromARGB(255, 151, 185, 249),
+        icon: const Icon(
+          Icons.add,
+          size: 30,
+          color: Color.fromARGB(255, 8, 42, 69),
+        ),
+        label: const Text(
+          "Hinzufügen",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color.fromARGB(255, 8, 42, 69),
+          ),
+        ),
       ),
     );
   }

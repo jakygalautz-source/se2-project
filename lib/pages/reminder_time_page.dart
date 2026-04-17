@@ -135,7 +135,20 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
                 data: MediaQuery.of(
                   context,
                 ).copyWith(alwaysUse24HourFormat: true),
-                child: child!,
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: Theme.of(
+                      context,
+                    ).colorScheme.copyWith(primary: Colors.blue),
+                    timePickerTheme: const TimePickerThemeData(
+                      hourMinuteTextColor: Colors.blue,
+                      hourMinuteColor: Color(0xFFE3F2FD),
+                      dialHandColor: Colors.blue,
+                      entryModeIconColor: Colors.blue,
+                    ),
+                  ),
+                  child: child!,
+                ),
               );
             },
           );

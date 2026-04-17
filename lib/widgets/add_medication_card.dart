@@ -9,10 +9,10 @@ class AddMedicationCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, '/medication_page'),
       child: MyCard(
-        color: const Color.fromARGB(255, 24, 227, 166),
+        color: const Color(0xFF3F6FD9),
         child: Row(
           children: [
-            Icon(Icons.add, color: Colors.black),
+            Icon(Icons.add, color: Color.fromARGB(255, 8, 42, 69), size: 30),
             SizedBox(width: 10),
             Text(
               "Medikament hinzufügen",

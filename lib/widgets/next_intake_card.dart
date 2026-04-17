@@ -7,7 +7,7 @@ class NextIntakeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyCard(
-      color: const Color.fromARGB(255, 232, 248, 242),
+      color: Color(0xFFE8F0FF),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withValues(alpha: 0.08),
