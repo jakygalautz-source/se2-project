@@ -148,7 +148,7 @@ class _MedicationPageState extends State<MedicationPage> {
           ? null
           : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.fromLTRB(25, 8, 25, 12),
                 child: SaveButton(onTap: _handleSave, isLoading: isSaving),
               ),
             ),

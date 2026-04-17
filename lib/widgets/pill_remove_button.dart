@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PillAddButton extends StatelessWidget {
-  final VoidCallback onAddFull;
-  final VoidCallback onAddHalf;
+class PillRemoveButton extends StatelessWidget {
+  final VoidCallback onRemoveFull;
+  final VoidCallback onRemoveHalf;
 
-  const PillAddButton({
+  const PillRemoveButton({
     super.key,
-    required this.onAddFull,
-    required this.onAddHalf,
+    required this.onRemoveFull,
+    required this.onRemoveHalf,
   });
 
   @override
@@ -15,7 +15,7 @@ class PillAddButton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 155, 233, 209),
+        color: Colors.redAccent.shade100,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -23,19 +23,19 @@ class PillAddButton extends StatelessWidget {
           Expanded(
             child: _buildHalfButton(
               context,
-              label: "+1",
+              label: "-1",
               imagePath: "lib/images/pill.png",
-              onTap: onAddFull,
-              backgroundColor: const Color.fromARGB(255, 24, 227, 166),
+              onTap: onRemoveFull,
+              backgroundColor: Colors.redAccent,
             ),
           ),
           const SizedBox(width: 6),
           Expanded(
             child: _buildHalfButton(
               context,
-              label: "+½",
+              label: "-½",
               imagePath: "lib/images/open-pill.png",
-              onTap: onAddHalf,
+              onTap: onRemoveHalf,
               backgroundColor: Colors.transparent,
             ),
           ),
