@@ -54,6 +54,10 @@ class IntakeSlotModel extends ChangeNotifier {
       amounts[dayPart] = 0;
     }
 
+    if (amounts[dayPart] == 0) {
+      reminders[dayPart] = false;
+    }
+
     notifyListeners();
   }
 
@@ -64,6 +68,10 @@ class IntakeSlotModel extends ChangeNotifier {
       amounts[dayPart] = current - 1;
     } else {
       amounts[dayPart] = 0;
+    }
+
+    if (amounts[dayPart] == 0) {
+      reminders[dayPart] = false;
     }
 
     notifyListeners();
