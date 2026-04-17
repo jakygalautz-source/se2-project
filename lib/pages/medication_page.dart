@@ -148,7 +148,7 @@ class _MedicationPageState extends State<MedicationPage> {
           ? null
           : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: SaveButton(onTap: _handleSave, isLoading: isSaving),
               ),
             ),
@@ -160,7 +160,7 @@ class _MedicationPageState extends State<MedicationPage> {
       thumbVisibility: true,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: isLandscape
               ? _buildLandscape(context)
               : _buildPortrait(context),

@@ -60,7 +60,7 @@ class IntakeSlotCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
+                  SizedBox(width: 8),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
