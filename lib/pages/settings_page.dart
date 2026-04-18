@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
+import 'package:pill_pilot/api/settings_api.dart';
+import 'package:pill_pilot/models/settings_model.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -27,15 +29,52 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _handleSave() async {
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (username.isEmpty || email.isEmpty) {
+      MySnackbar.show(
+        context,
+        message: "Bitte Benutzername und E-Mail-Adresse ausfüllen",
+      );
+      return;
+    }
+
+    if (password.isNotEmpty || confirmPassword.isNotEmpty) {
+      if (password != confirmPassword) {
+        MySnackbar.show(
+          context,
+          message: "Die Passwörter stimmen nicht überein",
+        );
+        return;
+      }
+    }
+
+    final settings = SettingsModel(
+      username: username,
+      email: email,
+      password: password,
+    );
+
     setState(() => _isSaving = true);
-    // !!!!! TODO: Model bauen und api, Backend verknüpfen !!!!!!!
-    await Future.delayed(const Duration(milliseconds: 500));
 
-    if (!mounted) return;
+    try {
+      await SettingsApi.saveSettings(settings);
 
-    setState(() => _isSaving = false);
+      if (!mounted) return;
 
-    MySnackbar.show(context, message: "Profileinstellungen gespeichert");
+      MySnackbar.show(context, message: "Profileinstellungen gespeichert");
+    } catch (_) {
+      if (!mounted) return;
+
+      MySnackbar.show(context, message: "Backend nicht erreichbar (Testmodus)");
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
   }
 
   bool _isSaving = false;

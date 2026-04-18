@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
+import 'package:pill_pilot/models/next_intake_model.dart';
 
 class NextIntakeCard extends StatelessWidget {
-  const NextIntakeCard({super.key});
+  final NextIntakeModel? nextIntake;
+
+  const NextIntakeCard({super.key, required this.nextIntake});
 
   @override
   Widget build(BuildContext context) {
+    final next = nextIntake;
+
     return MyCard(
       color: Color(0xFFE8F0FF),
       boxShadow: [
@@ -29,7 +34,12 @@ class NextIntakeCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Colors.white60,
                 ),
-                child: Icon(Icons.notifications_outlined, size: 35),
+                child: Icon(
+                  next?.hasActiveReminder == true
+                      ? Icons.notifications_active_outlined
+                      : Icons.notifications_outlined,
+                  size: 35,
+                ),
               ),
               const SizedBox(width: 20),
               Column(
@@ -43,13 +53,13 @@ class NextIntakeCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Medikament xy", // TODO Medication
+                    next?.title ?? "Keine Einnahme geplant",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    "in 25 Minuten", // TODO Time
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 64, 64, 64),
+                    next?.subtitle ?? "Keine Daten verfügbar",
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 64, 64, 64),
                       fontSize: 14,
                     ),
                   ),
