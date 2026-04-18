@@ -9,6 +9,17 @@ Die Architektur ist modular aufgebaut und trennt UI, Logik und API-Kommunikation
 
 ---
 
+## Architektur
+
+Die Anwendung folgt einer klaren Trennung von UI, Logik und Datenzugriff.
+- UI (pages, widgets): Darstellung und Benutzerinteraktion
+- Models (Provider): Zustand und Geschäftslogik im Frontend
+- API (api/): Kommunikation mit dem Backend über HTTP
+
+Daten werden im Frontend verarbeitet (z. B. Next-Intake-Berechnung) und über definierte JSON-Strukturen mit dem Backend ausgetauscht. Die Architektur ist modular aufgebaut und ermöglicht eine einfache Erweiterung sowie eine klare Verantwortlichkeit der einzelnen Komponenten.
+
+---
+
 ## Projektstruktur
 
 lib/
@@ -19,6 +30,15 @@ lib/
 
 backend/
 └── FastAPI-Backend (separat im Repo)
+
+---
+
+### ## Technologie-Stack
+
+- Flutter (Frontend)
+- Provider (State Management)
+- FastAPI (Backend)
+- HTTP (REST API) für die Kommunikation zwischen Frontend und Backend
 
 ---
 
@@ -66,8 +86,12 @@ POST /medications
 ### Weitere Endpoints
 GET /medications  
 DELETE /medications/{id}  
+
 GET /reminder-times  
 POST /reminder-times
+
+GET /settings  
+POST /settings
 
 ### Hinweis zu IDs
 - Jedes Medikament wird über eine eindeutige `id` identifiziert
@@ -94,6 +118,26 @@ http://10.0.2.2:8000
 Hinweis:
 10.0.2.2 wird im Android Emulator verwendet und verweist auf den lokalen Rechner.
 
+
+### Settings (Profileinstellungen)
+
+### Beispiel-JSON
+```json
+{
+  "username": "Saskia",
+  "email": "saskia@example.com",
+  "password": "newpassword123"
+}
+```
+### Verwendung
+GET /settings lädt aktuelle Profildaten
+POST /settings speichert Änderungen
+
+### Hinweise
+Passwort kann leer sein, wenn nur Benutzername oder E-Mail geändert werden
+Das Passwort wird im Frontend nicht wieder geladen
+Validierung erfolgt im Frontend (Pflichtfelder, Passwortbestätigung)
+
 ---
 
 ## Wichtige Komponenten
@@ -109,7 +153,9 @@ Hinweis:
 ### HomePage
 - Startseite der App
 - Einstiegspunkt für die wichtigsten Funktionen
-- zeigt nächste Einnahme und Navigationskarten
+- zeigt die nächste geplante Einnahme basierend auf Medikamenten und Erinnerungszeiten
+- berechnet Zeitpunkt, verbleibende Zeit und betroffene Medikamente im Frontend
+- zeigt optional den Reminder-Status (aktive Erinnerung vorhanden)
 - führt zu MedicationPage, MedicationListPage, Zeiten ändern und Einstellungen
 - unterstützt Portrait- und Landscape-Layout
 
@@ -177,14 +223,30 @@ Hinweis:
 - lädt gespeicherte Zeiten mit GET /reminder-times
 - speichert geänderte Zeiten mit POST /reminder-times
 
+### NextIntakeModel & NextIntakeHelper
+
+berechnen die nächste geplante Einnahme basierend auf:
+- allen Medikamenten (MedicationListModel)
+- globalen Erinnerungszeiten (ReminderTimeModel)
+
+bestimmen:
+- nächsten Zeitpunkt
+- verbleibende Minuten
+- betroffene Medikamente
+- ob ein Reminder aktiv ist
+- werden von der NextIntakeCard zur Anzeige verwendet
+- Logik läuft vollständig im Frontend (kein eigener Backend-Endpoint)
+
 ### SettingsPage
 - UI-Grundgerüst für die Profileinstellungen
 - enthält Felder für Benutzername, E-Mail-Adresse, neues Passwort und Passwortbestätigung
 - verwendet bestehende UI-Komponenten wie MyCard, SaveButton und MySnackbar
 - unterstützt Portrait- und Landscape-Layout
-- aktueller Stand ist ein Frontend-Scaffold ohne fertige Backend-Anbindung
-- dient als Vorbereitung für spätere Erweiterungen wie SettingsModel, API-Anbindung und Validierung
-
+- verwendet SettingsModel zur Datenstruktur
+- verwendet SettingsApi zur Kommunikation mit dem Backend
+- enthält Validierungslogik (Pflichtfelder, Passwortbestätigung)
+- speichert Daten über POST /settings
+- zeigt Feedback über Snackbar bei Erfolg oder Fehler
 
 ---
 
