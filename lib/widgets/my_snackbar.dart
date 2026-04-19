@@ -4,7 +4,7 @@ class MySnackbar {
   static void show(
     BuildContext context, {
     required String message,
-    Color backgroundColor = const Color.fromARGB(255, 155, 233, 209),
+    Color backgroundColor = Colors.blueGrey,
     Color textColor = Colors.black,
     Duration duration = const Duration(seconds: 2),
   }) {

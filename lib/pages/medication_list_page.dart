@@ -4,6 +4,8 @@ import 'package:pill_pilot/widgets/my_medication_list_card.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
 
 class MedicationListPage extends StatefulWidget {
   const MedicationListPage({super.key});
@@ -88,6 +90,11 @@ class _MedicationListPageState extends State<MedicationListPage> {
               onDelete: () async {
                 try {
                   await model.removeMedication(medication);
+
+                  await NotificationsService.instance.rescheduleFromCurrentData(
+                    reminderTimeModel: context.read<ReminderTimeModel>(),
+                    medications: model.medications,
+                  );
                 } catch (_) {
                   if (!mounted) return;
                   MySnackbar.show(

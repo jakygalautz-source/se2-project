@@ -3,8 +3,10 @@ import 'package:pill_pilot/api/reminder_time_api.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/day_part.dart';
 import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
 
 class ReminderTimePage extends StatefulWidget {
   const ReminderTimePage({super.key});
@@ -17,30 +19,43 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
   bool isSaving = false;
 
   void _handleSave() async {
-    final model = context.read<ReminderTimeModel>();
+    final reminderTimeModel = context.read<ReminderTimeModel>();
+    final medicationListModel = context.read<MedicationListModel>();
 
     setState(() => isSaving = true);
 
     try {
-      await ReminderTimeApi.saveReminderTimes(model.toJson());
+      await ReminderTimeApi.saveReminderTimes(reminderTimeModel.toJson());
+      debugPrint("Reminder times saved");
+    } catch (e, st) {
+      debugPrint("Save reminder times failed: $e");
+      debugPrintStack(stackTrace: st);
 
       if (!mounted) return;
-
-      MySnackbar.show(context, message: "Erinnerungszeiten wurden gespeichert");
-    } catch (_) {
-      if (!mounted) return;
-
       MySnackbar.show(context, message: "Backend nicht erreichbar (Testmodus)");
     }
 
-    // immer zurück (auch bei Fehler)
+    try {
+      debugPrint("Before reschedule");
+      await NotificationsService.instance.rescheduleFromCurrentData(
+        reminderTimeModel: reminderTimeModel,
+        medications: medicationListModel.medications,
+      );
+      debugPrint("After reschedule");
+    } catch (e, st) {
+      debugPrint("Reschedule failed: $e");
+      debugPrintStack(stackTrace: st);
+
+      if (!mounted) return;
+      MySnackbar.show(context, message: "Reminder konnte nicht geplant werden");
+      setState(() => isSaving = false);
+      return;
+    }
+
     if (!mounted) return;
 
+    MySnackbar.show(context, message: "Erinnerungszeiten wurden gespeichert");
     Navigator.pop(context);
-
-    if (mounted) {
-      setState(() => isSaving = false);
-    }
   }
 
   @override

@@ -10,6 +10,8 @@ import 'package:pill_pilot/models/medication_form_model.dart';
 import 'package:pill_pilot/models/medication_model.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
 
 class MedicationPage extends StatefulWidget {
   final bool isEditMode;
@@ -52,6 +54,7 @@ class _MedicationPageState extends State<MedicationPage> {
         .trim()
         .toLowerCase();
     final navigator = Navigator.of(context);
+    final reminderTimeModel = context.read<ReminderTimeModel>();
 
     if (!medicationFormModel.isValid) {
       MySnackbar.show(
@@ -92,40 +95,18 @@ class _MedicationPageState extends State<MedicationPage> {
 
     await medicationListModel.loadMedications();
 
-    // Erfolg anzeigen
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Row(
-    //       children: [
-    //         Expanded(child: Text("Medikament gespeichert")),
-    //         TextButton(
-    //           onPressed: () =>
-    //               Navigator.pushNamed(context, '/medication_list_page'),
-    //           child: const Text(
-    //             "zur Liste",
-    //             style: TextStyle(
-    //               fontSize: 18,
-    //               fontWeight: FontWeight.bold,
-    //               color: Colors.white,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //     backgroundColor: Colors.grey.shade800,
-    //     behavior: SnackBarBehavior.floating,
-    //     margin: EdgeInsets.all(16),
-    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    //   ),
-    // );
-
-    if (!mounted) return;
-    navigator.pushReplacementNamed('/medication_list_page');
+    await NotificationsService.instance.rescheduleFromCurrentData(
+      reminderTimeModel: reminderTimeModel,
+      medications: medicationListModel.medications,
+    );
 
     medicationFormModel.reset();
     medicationNameController.clear();
 
-    setState(() => isSaving = false);
+    if (!mounted) return;
+    navigator.pushReplacementNamed('/medication_list_page');
+
+    setState(() => isSaving = false); // brauch ich hier eigentlich nicht mehr
   }
 
   @override

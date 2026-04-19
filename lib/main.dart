@@ -10,9 +10,15 @@ import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/pages/app_entry_page.dart';
 import 'package:pill_pilot/pages/settings_page.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
 // import 'package:pill_pilot/pages/test_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await NotificationsService.instance.init();
+  await NotificationsService.instance.requestPermissions();
+
   runApp(
     MultiProvider(
       providers: [
