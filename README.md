@@ -64,6 +64,9 @@ backend/
 
 ## API-Kommunikation
 
+Emulator → 10.0.2.2
+echtes Gerät → lokale IP
+
 ### Endpoint
 POST /medications
 
