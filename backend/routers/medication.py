@@ -13,7 +13,7 @@ medications = []
 next_id = 1
 
 #-------------------------------------------
-# POST - MEDICATIONS
+# POST - MEDICATION
 #-------------------------------------------
 
 @router.post("/medications", status_code=201)
@@ -29,7 +29,7 @@ async def create_medication(medication: Medication):
     return medication_data
 
 #-------------------------------------------
-# GET - MEDICATIONS
+# GET - MEDICATION
 #-------------------------------------------
 
 @router.get("/medications")
@@ -37,7 +37,7 @@ async def get_medications():
     return medications
 
 #-------------------------------------------
-# DELETE - MEDICATIONS
+# DELETE - MEDICATION
 #-------------------------------------------
 
 @router.delete("/medications/{id}")
@@ -46,5 +46,20 @@ async def delete_medications(id: int):
         if medication["id"] == id:
             medications.pop(index)
             return {"message": "Medication deleted"}
+    
+    raise HTTPException(status_code=404, detail="Medication not found")
+
+#-------------------------------------------
+# UPDATE - MEDICATION
+#-------------------------------------------
+
+@router.put("/medications/{id}")
+async def update_medications(id: int, updated_medication: Medication):
+    for index, medication in enumerate(medications):
+        if medication["id"] == id:
+            medication_data = updated_medication.model_dump()
+            medication_data["id"] = id
+            medications[index] = medication_data
+            return medication_data
     
     raise HTTPException(status_code=404, detail="Medication not found")

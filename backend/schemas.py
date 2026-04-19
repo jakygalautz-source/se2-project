@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List
 
 
@@ -20,3 +20,12 @@ class ReminderTimes(BaseModel):
     noon: str
     evening: str
     night: str
+
+class SettingsResponse(BaseModel):
+    username: str
+    email: EmailStr
+
+class SettingsUpdate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str | None = None #WARUM??
