@@ -4,7 +4,7 @@ import 'package:pill_pilot/models/medication_model.dart';
 
 class MedicationApi {
   static const String baseUrl =
-      "http://10.0.2.2:8000"; // baseUrl: wo ist mein BAckend? -> serveradresse, für emulator 10.0.2.2:8000
+      "http://192.168.178.27:8000"; // baseUrl: wo ist mein BAckend? -> serveradresse, für emulator 10.0.2.2:8000, für test auf Handy ohne server: 192.168.178.27 (ist meine ipv4)
 
   static Future<void> saveMedication(Map<String, dynamic> data) async {
     final url = Uri.parse(
