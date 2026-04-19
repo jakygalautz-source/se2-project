@@ -18,7 +18,7 @@ class ReminderToggleButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: isEnabled
-              ? const Color.fromARGB(255, 24, 227, 166)
+              ? Colors.yellowAccent.shade100
               : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [

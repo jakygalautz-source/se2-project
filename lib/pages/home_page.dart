@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pill_pilot/api/reminder_time_api.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
 import 'package:pill_pilot/widgets/add_medication_card.dart';
 import 'package:pill_pilot/widgets/change_time_card.dart';
 // import 'package:pill_pilot/widgets/history_card.dart';
 import 'package:pill_pilot/widgets/my_medication_card.dart';
 import 'package:pill_pilot/widgets/next_intake_card.dart';
 import 'package:pill_pilot/widgets/settings_card.dart';
+import 'package:pill_pilot/models/next_intake_helper.dart';
+import 'package:pill_pilot/models/next_intake_model.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final reminderTimeModel = context.watch<ReminderTimeModel>();
+    final medicationListModel = context.watch<MedicationListModel>();
+
+    final nextIntake = NextIntakeHelper.calculate(
+      now: DateTime.now(),
+      reminderTimeModel: reminderTimeModel,
+      medications: medicationListModel.medications,
+    );
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
@@ -18,16 +32,16 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: isLandscape
-              ? _buildLandscape(context)
-              : _buildPortrait(context),
+              ? _buildLandscape(context, nextIntake)
+              : _buildPortrait(context, nextIntake),
         ),
       ),
     );
   }
 
-  Widget _buildPortrait(BuildContext context) {
+  Widget _buildPortrait(BuildContext context, NextIntakeModel? nextIntake) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +67,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          NextIntakeCard(),
+          NextIntakeCard(nextIntake: nextIntake),
           const SizedBox(height: 20),
           AddMedicationCard(),
           const SizedBox(height: 12),
@@ -68,7 +82,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLandscape(BuildContext context) {
+  Widget _buildLandscape(BuildContext context, NextIntakeModel? nextIntake) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +111,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Stack(
                   children: [
-                    NextIntakeCard(),
+                    NextIntakeCard(nextIntake: nextIntake),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Image.asset("lib/images/pills.png", height: 75),

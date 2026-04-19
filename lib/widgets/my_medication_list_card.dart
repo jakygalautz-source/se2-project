@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/models/medication_model.dart';
+import 'package:pill_pilot/widgets/delete_button.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 
 class MyMedicationListCard extends StatelessWidget {
   final Medication medication;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
 
-  const MyMedicationListCard({super.key, required this.medication, this.onTap});
+  const MyMedicationListCard({
+    super.key,
+    required this.medication,
+    this.onTap,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class MyMedicationListCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                const Icon(Icons.edit_outlined, size: 22),
+                DeleteButton(onTap: onDelete),
               ],
             ),
             const SizedBox(height: 12),
@@ -44,6 +51,9 @@ class MyMedicationListCard extends StatelessWidget {
                       flex: 2,
                       child: Text(
                         _getDayPartLabel(intake.dayPart),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
@@ -51,14 +61,29 @@ class MyMedicationListCard extends StatelessWidget {
                       flex: 3,
                       child: Text(
                         '${_formatAmount(intake.amount)} ${_getUnitText(intake.amount)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                     Expanded(
                       flex: 3,
-                      child: Text(
-                        intake.reminder ? 'Erinnerung an' : 'Erinnerung aus',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            intake.reminder
+                                ? Icons.notifications_active_outlined
+                                : Icons.notifications_off_outlined,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            intake.reminder ? 'An' : 'Aus',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
                     ),
                   ],

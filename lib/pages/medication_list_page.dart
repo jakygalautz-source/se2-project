@@ -3,6 +3,9 @@ import 'package:pill_pilot/pages/medication_page.dart';
 import 'package:pill_pilot/widgets/my_medication_list_card.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/widgets/my_snackbar.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
 
 class MedicationListPage extends StatefulWidget {
   const MedicationListPage({super.key});
@@ -35,6 +38,25 @@ class _MedicationListPageState extends State<MedicationListPage> {
             ? _buildLandscape(context, model)
             : _buildPortrait(context, model),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/medication_page');
+        },
+        backgroundColor: const Color.fromARGB(255, 151, 185, 249),
+        icon: const Icon(
+          Icons.add,
+          size: 30,
+          color: Color.fromARGB(255, 8, 42, 69),
+        ),
+        label: const Text(
+          "Hinzufügen",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color.fromARGB(255, 8, 42, 69),
+          ),
+        ),
+      ),
     );
   }
 
@@ -64,6 +86,23 @@ class _MedicationListPageState extends State<MedicationListPage> {
                 );
                 if (!mounted) return;
                 await model.loadMedications();
+              },
+              onDelete: () async {
+                try {
+                  await model.removeMedication(medication);
+
+                  await NotificationsService.instance.rescheduleFromCurrentData(
+                    reminderTimeModel: context.read<ReminderTimeModel>(),
+                    medications: model.medications,
+                  );
+                } catch (_) {
+                  if (!mounted) return;
+                  MySnackbar.show(
+                    context,
+                    message: "Medikament konnte nicht gelöscht werden",
+                    backgroundColor: Colors.grey.shade800,
+                  );
+                }
               },
             );
           },
@@ -109,6 +148,17 @@ class _MedicationListPageState extends State<MedicationListPage> {
                         if (!mounted) return;
                         await model.loadMedications();
                       },
+                      onDelete: () async {
+                        try {
+                          await model.removeMedication(leftMedication);
+                        } catch (_) {
+                          if (!mounted) return;
+                          MySnackbar.show(
+                            context,
+                            message: "Medikament konnte nicht gelöscht werden",
+                          );
+                        }
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -128,6 +178,18 @@ class _MedicationListPageState extends State<MedicationListPage> {
                               );
                               if (!mounted) return;
                               await model.loadMedications();
+                            },
+                            onDelete: () async {
+                              try {
+                                await model.removeMedication(rightMedication!);
+                              } catch (_) {
+                                if (!mounted) return;
+                                MySnackbar.show(
+                                  context,
+                                  message:
+                                      "Medikament konnte nicht gelöscht werden",
+                                );
+                              }
                             },
                           )
                         : const SizedBox(),

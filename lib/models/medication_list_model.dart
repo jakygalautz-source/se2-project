@@ -23,6 +23,16 @@ class MedicationListModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeMedication(Medication medication) async {
+    if (medication.id == null) {
+      throw Exception();
+    }
+
+    await MedicationApi.deleteMedication(medication.id!);
+    medications.removeWhere((item) => item.id == medication.id);
+    notifyListeners();
+  }
+
   bool get isEmpty => medications.isEmpty;
 
   List<Medication> _getFakeMedications() {
