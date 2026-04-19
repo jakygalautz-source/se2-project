@@ -1,55 +1,36 @@
 # FastAPI entry point (to be implemented)
 
 from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List
 import uvicorn
 
+#-------------------------------------------
+# Import API routers
+#-------------------------------------------
+from routers.medication import router as medication_router
+from routers.reminder_times import router as reminder_times_router
+
+
+#-------------------------------------------
+# FastAPI appication instance
+#-------------------------------------------
 app = FastAPI()
 
 #-------------------------------------------
-#first test-endpoint
+# Register routers from EP
 #-------------------------------------------
+app.include_router(medication_router)
+app.include_router(reminder_times_router)
 
+
+#-------------------------------------------
+#test-endpoint 
+#-------------------------------------------
 @app.get("/")
 def root():
     return{"message": "Backend läuft"}
 
 #-------------------------------------------
-#classes
+# Start the development server
 #-------------------------------------------
-
-class Intake(BaseModel):
-    dayPart: str
-    amount: float
-    reminder: bool
-
-class Medication(BaseModel):
-    name: str
-    intakes: List[Intake]
-
-#-------------------------------------------
-# database needed - List for testing
-#-------------------------------------------
-
-medications = []
-
-#-------------------------------------------
-# POST - EP
-#-------------------------------------------
-
-@app.post("/medications", status_code=201)
-async def create_medication(medication: Medication):
-    medications.append(medication.model_dump())
-    return medication
-
-#-------------------------------------------
-# GET - EP
-#-------------------------------------------
-
-@app.get("/medications")
-async def get_medications():
-    return medications
-
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
