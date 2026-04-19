@@ -131,3 +131,54 @@ The frontend then determines:
 - the remaining minutes until intake
 - which medications are due at that time
 - whether at least one of them has reminder enabled
+
+
+## Reminder Times (additional endpoints)
+### GET /reminder-times
+
+Used to retrieve the currently stored global reminder times.
+
+### POST /reminder-times
+
+Used to save/update the global reminder times.
+
+Example JSON
+```json
+{
+  "morning": "08:00",
+  "noon": "12:00",
+  "evening": "17:00",
+  "night": "21:00"
+}
+```
+
+## Notes
+- Reminder times are global (not per medication)
+- Time format is always HH:mm (24-hour format)
+- Used by the frontend to load and store reminder settings
+
+--------------------------------------
+## HOW TO
+--------------------------------------
+
+-Start main.py 
+-Open Terminal
+-type:
+python main.py
+
+-Open:
+http://127.0.0.1:8000
+response: {"message":"Backend läuft"}
+
+## EP-Checkpoint
+http://127.0.0.1:8000/docs
+
+
+
+
+
+
+
+
+
+uvicorn main:app --reload
