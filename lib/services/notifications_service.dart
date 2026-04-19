@@ -63,6 +63,8 @@ class NotificationsService {
           'Reminder notifications for upcoming medication intake',
       importance: Importance.max,
       priority: Priority.high,
+      ongoing: true,
+      autoCancel: false,
     );
 
     const darwinDetails = DarwinNotificationDetails();
@@ -149,5 +151,14 @@ class NotificationsService {
       body: 'Notification funktioniert',
       notificationDetails: notificationDetails,
     );
+  }
+
+  Future<void> requestExactAlarmPermission() async {
+    final androidPlugin = _notifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    await androidPlugin?.requestExactAlarmsPermission();
   }
 }

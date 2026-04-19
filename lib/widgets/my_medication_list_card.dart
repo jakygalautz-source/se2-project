@@ -51,6 +51,9 @@ class MyMedicationListCard extends StatelessWidget {
                       flex: 2,
                       child: Text(
                         _getDayPartLabel(intake.dayPart),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
@@ -58,14 +61,29 @@ class MyMedicationListCard extends StatelessWidget {
                       flex: 3,
                       child: Text(
                         '${_formatAmount(intake.amount)} ${_getUnitText(intake.amount)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                     Expanded(
                       flex: 3,
-                      child: Text(
-                        intake.reminder ? 'Erinnerung an' : 'Erinnerung aus',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            intake.reminder
+                                ? Icons.notifications_active_outlined
+                                : Icons.notifications_off_outlined,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            intake.reminder ? 'An' : 'Aus',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
                     ),
                   ],

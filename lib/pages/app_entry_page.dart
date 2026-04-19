@@ -28,9 +28,10 @@ class _AppEntryPageState extends State<AppEntryPage> {
 
     await NotificationsService.instance.init();
     await NotificationsService.instance.requestPermissions();
+    await NotificationsService.instance.requestExactAlarmPermission();
 
     // optional zum testen
-    await NotificationsService.instance.showTestNotification();
+    // await NotificationsService.instance.showTestNotification();
 
     try {
       final reminderData = await ReminderTimeApi.getReminderTimes();

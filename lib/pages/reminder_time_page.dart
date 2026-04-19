@@ -126,6 +126,7 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: Image.asset(_iconPath(dayPart), width: 28, height: 28),
         title: Text(
           _label(dayPart),
           style: Theme.of(context).textTheme.titleMedium,
@@ -193,5 +194,18 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
     final hour = time.hour.toString().padLeft(2, '0');
     final minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
+  }
+
+  String _iconPath(DayPart part) {
+    switch (part) {
+      case DayPart.morning:
+        return 'lib/images/morning.png';
+      case DayPart.noon:
+        return 'lib/images/noon.png';
+      case DayPart.evening:
+        return 'lib/images/evening.png';
+      case DayPart.night:
+        return 'lib/images/night.png';
+    }
   }
 }

@@ -42,28 +42,32 @@ class NextIntakeCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Nächste Einnahme:",
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 64, 64, 64),
-                      fontSize: 16,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Nächste Einnahme:",
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 64, 64, 64),
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  Text(
-                    next?.title ?? "Keine Einnahme geplant",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Text(
-                    next?.subtitle ?? "Keine Daten verfügbar",
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 64, 64, 64),
-                      fontSize: 14,
+                    Text(
+                      next?.title ?? "Keine Einnahme geplant",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),
-                ],
+                    Text(
+                      next?.subtitle ?? "Keine Daten verfügbar",
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 64, 64, 64),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
