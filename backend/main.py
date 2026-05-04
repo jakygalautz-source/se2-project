@@ -1,6 +1,6 @@
 # FastAPI entry point (to be implemented)
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import uvicorn
 
 #-------------------------------------------
@@ -9,6 +9,12 @@ import uvicorn
 from routers.medication import router as medication_router
 from routers.reminder_times import router as reminder_times_router
 from routers.settings import router as settings_router
+
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+
+from database import get_db
+
 
 
 #-------------------------------------------
@@ -30,6 +36,14 @@ app.include_router(settings_router)
 @app.get("/")
 def root():
     return{"message": "Backend läuft"}
+
+# -------------------------------------------
+# Database test endpoint
+# -------------------------------------------
+@app.get("/db-test")
+def db_test(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT 1")).scalar()
+    return {"database_connection": result}
 
 #-------------------------------------------
 # Start the development server

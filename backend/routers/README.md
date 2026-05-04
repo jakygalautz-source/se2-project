@@ -1,16 +1,43 @@
-Dokumentation main.py
+# Routers
 
-Die Datei main.py ist der Einstiegspunkt des FastAPI-Backends.
-Hier wird die FastAPI-Anwendung erstellt, die Router eingebunden und der Server gestartet.
+This folder contains the API routers of the FastAPI backend.
 
-Aufbau
-FastAPI wird importiert, um die Backend-Anwendung zu erstellen.
-uvicorn wird importiert, um den Server lokal zu starten.
-Die Router aus routers/medication.py und routers/reminder_times.py werden eingebunden.
-Der Test-Endpunkt / gibt eine einfache Antwort zurück, um zu prüfen, ob das Backend läuft.
-Mit uvicorn.run("main:app", reload=True) wird der Server gestartet.
-Aufgabe von main.py
+Each router file groups endpoints for one specific part of the application.  
+The routers are registered in `main.py` using `app.include_router(...)`.
 
-main.py dient nur als zentrale Startdatei.
-Die eigentliche Logik für Medikamente und Reminder-Zeiten liegt in den Router-Dateien, damit der Code übersichtlich bleibt.
+## Files
 
+| File | Purpose |
+|---|---|
+| `medication.py` | Handles medication endpoints |
+| `reminder_times.py` | Handles global reminder time endpoints |
+| `settings.py` | Handles user settings endpoints |
+
+## medication.py
+
+This router provides endpoints for creating, reading, updating and deleting medications.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/medications` | Returns all medications |
+| POST | `/medications` | Creates a new medication |
+| PUT | `/medications/{id}` | Updates a medication |
+| DELETE | `/medications/{id}` | Deletes a medication |
+
+Medication data is received from the frontend in JSON format.
+
+Example:
+
+```json
+{
+  "name": "Ibuprofen",
+  "intakes": [
+    {
+      "dayPart": "morning",
+      "amount": 1.0,
+      "reminder": true
+    }
+  ]
+}
