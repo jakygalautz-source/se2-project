@@ -1,4 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from database import get_db
 from schemas import Medication
 
 router = APIRouter()
@@ -8,9 +11,9 @@ router = APIRouter()
 #-------------------------------------------
 
 # List instead of DATABASE
-medications = []
+#medications = []
 # variable for testing ID
-next_id = 1
+#next_id = 1
 
 #-------------------------------------------
 # POST - MEDICATION
@@ -33,8 +36,51 @@ async def create_medication(medication: Medication):
 #-------------------------------------------
 
 @router.get("/medications")
-async def get_medications():
-    return medications
+def get_medications(db: Session = Depends(get_db)):
+    # Temporary fixed user ID until login exists
+    user_id = 1
+
+    # Get all medications for this user
+    medications = db.execute(
+        text("""
+            SELECT id, name
+            FROM medications
+            WHERE user_id = :user_id
+            ORDER BY id
+        """),
+        {"user_id": user_id}
+    ).fetchall()
+
+    result = []
+
+    # For each medication, get the related intakes
+    for medication in medications:
+        medication_id = medication[0]
+
+        intakes = db.execute(
+            text("""
+                SELECT day_part, amount, reminder
+                FROM medication_intakes
+                WHERE medication_id = :medication_id
+                ORDER BY id
+            """),
+            {"medication_id": medication_id}
+        ).fetchall()
+
+        result.append({
+            "id": medication[0],
+            "name": medication[1],
+            "intakes": [
+                {
+                    "dayPart": intake[0],
+                    "amount": float(intake[1]),
+                    "reminder": intake[2]
+                }
+                for intake in intakes
+            ]
+        })
+
+    return result
 
 #-------------------------------------------
 # DELETE - MEDICATION
