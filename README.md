@@ -31,7 +31,7 @@ backend/
 
 ---
 
-### ## Technologie-Stack
+## Technologie-Stack
 
 - Flutter (Frontend)
     + flutter_local_notifications 21.0.0
@@ -139,6 +139,23 @@ POST /settings speichert Änderungen
 Passwort kann leer sein, wenn nur Benutzername oder E-Mail geändert werden
 Das Passwort wird im Frontend nicht wieder geladen
 Validierung erfolgt im Frontend (Pflichtfelder, Passwortbestätigung)
+
+## Authentifizierung (Login & Registrierung)
+
+Die App unterstützt eine einfache Benutzeranmeldung und Registrierung.
+
+### Funktionen
+ Registrierung neuer Benutzer
+- Login mit E-Mail und Passwort
+- Passwort wird im Frontend nicht gespeichert oder angezeigt
+
+### Benötigte Backend-Endpunkte
+- POST /register
+- POST /login
+
+### Hinweise
+- Passwort-Hashing erfolgt im Backend
+- Kein Klartext-Passwort
 
 ---
 
@@ -262,53 +279,23 @@ bestimmen:
 
 ## Lokale Benachrichtigungen (Reminder)
 
-Die App unterstützt lokale Benachrichtigungen zur Erinnerung an Medikamenteneinnahmen.
+Die App verwendet lokale Benachrichtigungen, um Nutzer an fällige Medikamenteneinnahmen zu erinnern.
 
 ### Funktionsweise
-- Beim Speichern der Erinnerungszeiten wird automatisch die nächste fällige Einnahme berechnet
-- Es wird immer **nur die nächste Notification** geplant (kein Bulk Scheduling)
-- Vor dem Planen werden bestehende Notifications gelöscht (`cancelAll()`), um Duplikate zu vermeiden
-- Die Berechnung erfolgt im Frontend über `NextReminderHelper`
+- Es wird immer nur die nächste Einnahme geplant
+- Bestehende Notifications werden vor dem Planen entfernt
+- Die Berechnung erfolgt im Frontend
 
 ### Technische Umsetzung
-- Verwendung von `flutter_local_notifications`
-- Zeitplanung über `zonedSchedule` in Kombination mit `timezone`
-- Zentrale Steuerung über den `NotificationsService`
+- flutter_local_notifications
+- zentrale Steuerung über NotificationsService
 
-### Initialisierung
-- Beim Start der App wird die Notification-Logik automatisch ausgeführt
-- Die App lädt:
-  - Erinnerungszeiten (`ReminderTimeModel`)
-  - Medikamente (`MedicationListModel`)
-- Danach wird die nächste Notification geplant (`rescheduleFromCurrentData()`)
-
-### Android-spezifische Hinweise
-
-Für lokale Benachrichtigungen wurden im Android-Manifest folgende Einträge ergänzt:
+### Android-Hinweise
+Erforderliche Permissions:
 
 ```xml
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-
-Zusätzlich werden folgende Receiver verwendet (durch flutter_local_notifications):
-
-<receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
-<receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
-    <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
-        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-    </intent-filter>
-</receiver>
-```
-- RECEIVE_BOOT_COMPLETED ermöglicht das erneute Registrieren von Notifications nach einem Neustart
-- SCHEDULE_EXACT_ALARM wird für exakte Erinnerungen benötigt
-- die Receiver werden für geplante und wiederhergestellte Notifications verwendet
-
-### Verhalten im Testmodus
-Notifications funktionieren unabhängig vom Backend
-auch bei nicht erreichbarem Backend werden Erinnerungen lokal berechnet und geplant
 
 ## Einschränkungen
 Es wird aktuell nur die nächste Einnahme als Notification geplant
