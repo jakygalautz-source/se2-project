@@ -161,12 +161,15 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
                 ).copyWith(alwaysUse24HourFormat: true),
                 child: Theme(
                   data: Theme.of(context).copyWith(
-                    colorScheme: Theme.of(
-                      context,
-                    ).colorScheme.copyWith(primary: Colors.blue),
+                    colorScheme: Theme.of(context).colorScheme.copyWith(
+                      primary: Colors.blue,
+                      surface: Colors.white,
+                    ),
                     timePickerTheme: const TimePickerThemeData(
+                      backgroundColor: Colors.white,
                       hourMinuteTextColor: Colors.blue,
                       hourMinuteColor: Color(0xFFE3F2FD),
+                      dialBackgroundColor: Color(0xFFE3F2FD),
                       dialHandColor: Colors.blue,
                       entryModeIconColor: Colors.blue,
                     ),
