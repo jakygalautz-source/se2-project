@@ -6,7 +6,7 @@ import 'package:pill_pilot/widgets/my_card.dart';
 class MyMedicationListCard extends StatelessWidget {
   final Medication medication;
   final VoidCallback? onTap;
-  final VoidCallback? onDelete;
+  final Future<void> Function()? onDelete;
 
   const MyMedicationListCard({
     super.key,

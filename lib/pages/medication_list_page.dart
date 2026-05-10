@@ -15,10 +15,64 @@ class MedicationListPage extends StatefulWidget {
 }
 
 class _MedicationListPageState extends State<MedicationListPage> {
+  bool _isNavigating = false;
+
   @override
   void initState() {
     super.initState();
-    context.read<MedicationListModel>().loadMedications();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MedicationListModel>().loadMedications();
+    });
+  }
+
+  Future<void> _openMedicationPage([dynamic medication]) async {
+    if (_isNavigating) return;
+
+    setState(() => _isNavigating = true);
+
+    if (medication == null) {
+      await Navigator.pushNamed(context, '/medication_page');
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              MedicationPage(isEditMode: true, medication: medication),
+        ),
+      );
+    }
+
+    if (!mounted) return;
+
+    await context.read<MedicationListModel>().loadMedications();
+
+    if (mounted) {
+      setState(() => _isNavigating = false);
+    }
+  }
+
+  Future<void> _deleteMedication(
+    BuildContext context,
+    MedicationListModel model,
+    dynamic medication,
+  ) async {
+    try {
+      await model.removeMedication(medication);
+
+      await NotificationsService.instance.rescheduleFromCurrentData(
+        reminderTimeModel: context.read<ReminderTimeModel>(),
+        medications: model.medications,
+      );
+    } catch (_) {
+      if (!mounted) return;
+
+      MySnackbar.show(
+        context,
+        message: "Medikament konnte nicht gelöscht werden",
+        backgroundColor: Colors.grey.shade800,
+      );
+    }
   }
 
   @override
@@ -39,15 +93,19 @@ class _MedicationListPageState extends State<MedicationListPage> {
             : _buildPortrait(context, model),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, '/medication_page');
-        },
+        onPressed: _isNavigating ? null : () => _openMedicationPage(),
         backgroundColor: const Color.fromARGB(255, 151, 185, 249),
-        icon: const Icon(
-          Icons.add,
-          size: 30,
-          color: Color.fromARGB(255, 8, 42, 69),
-        ),
+        icon: _isNavigating
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Icon(
+                Icons.add,
+                size: 30,
+                color: Color.fromARGB(255, 8, 42, 69),
+              ),
         label: const Text(
           "Hinzufügen",
           style: TextStyle(
@@ -75,34 +133,10 @@ class _MedicationListPageState extends State<MedicationListPage> {
             return MyMedicationListCard(
               medication: medication,
               onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MedicationPage(
-                      isEditMode: true,
-                      medication: medication,
-                    ),
-                  ),
-                );
-                if (!mounted) return;
-                await model.loadMedications();
+                await _openMedicationPage(medication);
               },
               onDelete: () async {
-                try {
-                  await model.removeMedication(medication);
-
-                  await NotificationsService.instance.rescheduleFromCurrentData(
-                    reminderTimeModel: context.read<ReminderTimeModel>(),
-                    medications: model.medications,
-                  );
-                } catch (_) {
-                  if (!mounted) return;
-                  MySnackbar.show(
-                    context,
-                    message: "Medikament konnte nicht gelöscht werden",
-                    backgroundColor: Colors.grey.shade800,
-                  );
-                }
+                await _deleteMedication(context, model, medication);
               },
             );
           },
@@ -136,28 +170,10 @@ class _MedicationListPageState extends State<MedicationListPage> {
                     child: MyMedicationListCard(
                       medication: leftMedication,
                       onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MedicationPage(
-                              isEditMode: true,
-                              medication: leftMedication,
-                            ),
-                          ),
-                        );
-                        if (!mounted) return;
-                        await model.loadMedications();
+                        await _openMedicationPage(leftMedication);
                       },
                       onDelete: () async {
-                        try {
-                          await model.removeMedication(leftMedication);
-                        } catch (_) {
-                          if (!mounted) return;
-                          MySnackbar.show(
-                            context,
-                            message: "Medikament konnte nicht gelöscht werden",
-                          );
-                        }
+                        await _deleteMedication(context, model, leftMedication);
                       },
                     ),
                   ),
@@ -167,29 +183,14 @@ class _MedicationListPageState extends State<MedicationListPage> {
                         ? MyMedicationListCard(
                             medication: rightMedication,
                             onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MedicationPage(
-                                    isEditMode: true,
-                                    medication: rightMedication,
-                                  ),
-                                ),
-                              );
-                              if (!mounted) return;
-                              await model.loadMedications();
+                              await _openMedicationPage(rightMedication);
                             },
                             onDelete: () async {
-                              try {
-                                await model.removeMedication(rightMedication!);
-                              } catch (_) {
-                                if (!mounted) return;
-                                MySnackbar.show(
-                                  context,
-                                  message:
-                                      "Medikament konnte nicht gelöscht werden",
-                                );
-                              }
+                              await _deleteMedication(
+                                context,
+                                model,
+                                rightMedication,
+                              );
                             },
                           )
                         : const SizedBox(),
