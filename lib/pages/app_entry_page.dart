@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pill_pilot/api/reminder_time_api.dart';
 import 'package:pill_pilot/models/reminder_time_model.dart';
-// import 'package:pill_pilot/pages/home_page.dart';
+import 'package:pill_pilot/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pill_pilot/services/notifications_service.dart';
 import 'package:pill_pilot/models/medication_list_model.dart';
@@ -67,7 +67,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
         body: SafeArea(child: Center(child: CircularProgressIndicator())),
       );
     }
-    // return const HomePage();
-    return const LoginPage();
+    return const HomePage();
+    // return const LoginPage();
   }
 }

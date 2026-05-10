@@ -85,8 +85,16 @@ class _MedicationPageState extends State<MedicationPage> {
     try {
       await MedicationApi.saveMedication(medicationFormModel.toJson());
     } catch (_) {
-      // FAKE: hier folgt ein fake-baclkend-delay
-      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+
+      MySnackbar.show(
+        context,
+        message: "Medikament konnte nicht gespeichert werden",
+        backgroundColor: Colors.grey.shade800,
+      );
+
+      setState(() => isSaving = false);
+      return;
     }
 
     if (!mounted) {
