@@ -50,14 +50,13 @@ backend/
    - MedicationApi.saveMedication() sendet Daten an das Backend
 4. In der MedicationListPage werden Medikamente über das MedicationListModel geladen
 5. Das MedicationListModel verwendet MedicationApi.getMedications()
-6. Falls das Backend nicht erreichbar ist, werden Fake-Daten geladen
-7. Beim Start der App wird die AppEntryPage geladen
-8. Die AppEntryPage lädt initiale Daten aus dem Backend (z. B. Erinnerungszeiten)
-9. Die geladenen Zeiten werden im ReminderTimeModel gespeichert
-10. Alle relevanten UI-Komponenten (z. B. IntakeSlotCard) greifen auf das ReminderTimeModel zu
-11. Änderungen an Erinnerungszeiten werden über notifyListeners() sofort in der UI aktualisiert
-12. In der ReminderTimePage können die vier globalen Erinnerungszeiten bearbeitet werden
-13. Beim Speichern werden die Zeiten mit toJson() vorbereitet und über die ReminderTimeApi an das Backend gesendet
+6. Beim Start der App wird die AppEntryPage geladen
+7. Die AppEntryPage lädt initiale Daten aus dem Backend (z. B. Erinnerungszeiten)
+8. Die geladenen Zeiten werden im ReminderTimeModel gespeichert
+9. Alle relevanten UI-Komponenten (z. B. IntakeSlotCard) greifen auf das ReminderTimeModel zu
+10. Änderungen an Erinnerungszeiten werden über notifyListeners() sofort in der UI aktualisiert
+11. In der ReminderTimePage können die vier globalen Erinnerungszeiten bearbeitet werden
+12. Beim Speichern werden die Zeiten mit toJson() vorbereitet und über die ReminderTimeApi an das Backend gesendet
 
 
 ---
@@ -181,7 +180,6 @@ Die App unterstützt eine einfache Benutzeranmeldung und Registrierung.
 ### MedicationListPage
 - zeigt vorhandene Medikamente in einer Liste
 - lädt Daten aus dem Backend
-- verwendet Fake-Daten als Fallback, wenn das Backend nicht erreichbar ist
 - dient als Übersicht geladener Medikamente aus dem Backend
 - Medikamente können per Tap zur Bearbeitung in die MedicationPage öffnen
 - ermöglicht das Löschen von Medikamenten über einen DeleteButton
@@ -214,7 +212,6 @@ Die App unterstützt eine einfache Benutzeranmeldung und Registrierung.
 ### MedicationListModel
 - verwaltet den Zustand der Medikamentenliste
 - lädt Medikamente über API
-- verwendet Fake-Daten als Fallback, wenn das Backend noch nicht erreichbar ist
 
 ### MedicationApi
 - zuständig für HTTP-Requests

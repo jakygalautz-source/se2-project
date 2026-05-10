@@ -66,10 +66,16 @@ class _SettingsPageState extends State<SettingsPage> {
       if (!mounted) return;
 
       MySnackbar.show(context, message: "Profileinstellungen gespeichert");
+      _passwordController.clear();
+      _confirmPasswordController.clear();
     } catch (_) {
       if (!mounted) return;
 
-      MySnackbar.show(context, message: "Backend nicht erreichbar (Testmodus)");
+      MySnackbar.show(
+        context,
+        message: "Profileinstellungen konnten nicht gespeichert werden",
+        backgroundColor: Colors.grey.shade800,
+      );
     } finally {
       if (mounted) {
         setState(() => _isSaving = false);

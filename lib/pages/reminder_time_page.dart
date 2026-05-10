@@ -32,7 +32,15 @@ class _ReminderTimePageState extends State<ReminderTimePage> {
       debugPrintStack(stackTrace: st);
 
       if (!mounted) return;
-      MySnackbar.show(context, message: "Backend nicht erreichbar (Testmodus)");
+
+      MySnackbar.show(
+        context,
+        message: "Erinnerungszeiten konnten nicht gespeichert werden",
+        backgroundColor: Colors.grey.shade800,
+      );
+
+      setState(() => isSaving = false);
+      return;
     }
 
     try {
