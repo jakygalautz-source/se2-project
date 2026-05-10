@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: .
+    container_name: pill_pilot_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:123456@postgres_db:5432/pill_pilot
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:16
+    container_name: pill_pilot_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: pill_pilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:
