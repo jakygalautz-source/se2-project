@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pill_pilot/models/reminder_time_model.dart';
-import 'package:pill_pilot/api/reminder_time_api.dart';
-import 'package:provider/provider.dart';
-import 'package:pill_pilot/widgets/my_snackbar.dart';
 
 class ChangeTimeButton extends StatefulWidget {
   final VoidCallback onTap;
@@ -31,21 +27,7 @@ class _ChangeTimeButtonState extends State<ChangeTimeButton> {
           : () async {
               setState(() => _isLoading = true);
 
-              final reminderTimeModel = context.read<ReminderTimeModel>();
               final navigator = Navigator.of(context);
-
-              try {
-                final data = await ReminderTimeApi.getReminderTimes();
-                reminderTimeModel.loadFromJson(data);
-              } catch (_) {
-                if (!context.mounted) return;
-
-                MySnackbar.show(
-                  context,
-                  message: "Erinnerungszeiten konnten nicht geladen werden",
-                  backgroundColor: Colors.grey.shade800,
-                );
-              }
 
               if (!context.mounted) return;
 
