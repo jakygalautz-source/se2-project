@@ -4,6 +4,7 @@ import 'package:pill_pilot/models/auth_model.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/widgets/login_button.dart';
+import 'package:pill_pilot/widgets/password_textfield.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -90,13 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    TextField(
+                    PasswordTextfield(
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: "Passwort",
-                        prefixIcon: Icon(Icons.lock_outline),
-                      ),
+                      labelText: "Passwort",
                     ),
                   ],
                 ),

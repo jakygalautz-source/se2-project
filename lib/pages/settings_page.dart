@@ -4,6 +4,7 @@ import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/api/settings_api.dart';
 import 'package:pill_pilot/models/settings_model.dart';
+import 'package:pill_pilot/widgets/password_textfield.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -179,16 +180,14 @@ class _SettingsPageState extends State<SettingsPage> {
             decoration: const InputDecoration(labelText: "E-Mail-Adresse"),
           ),
           const SizedBox(height: 16),
-          TextField(
+          PasswordTextfield(
             controller: _passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(labelText: "Neues Passwort"),
+            labelText: "Neues Passwort",
           ),
           const SizedBox(height: 16),
-          TextField(
+          PasswordTextfield(
             controller: _confirmPasswordController,
-            obscureText: true,
-            decoration: const InputDecoration(labelText: "Passwort bestätigen"),
+            labelText: "Passwort bestätigen",
           ),
         ],
       ),

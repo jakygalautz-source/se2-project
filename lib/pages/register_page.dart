@@ -4,6 +4,7 @@ import 'package:pill_pilot/models/auth_model.dart';
 import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/widgets/save_button.dart';
+import 'package:pill_pilot/widgets/password_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -119,22 +120,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    TextField(
+                    PasswordTextfield(
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: "Passwort",
-                        prefixIcon: Icon(Icons.lock_outline),
-                      ),
+                      labelText: "Passwort",
                     ),
                     const SizedBox(height: 18),
-                    TextField(
+                    PasswordTextfield(
                       controller: _confirmPasswordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: "Passwort bestätigen",
-                        prefixIcon: Icon(Icons.lock_outline),
-                      ),
+                      labelText: "Passwort bestätigen",
                     ),
                   ],
                 ),
