@@ -4,19 +4,27 @@ class MyTextfield extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final Color borderColor;
+  final FocusNode? focusNode;
+  final Function(String)? onSubmitted;
 
   const MyTextfield({
     super.key,
     required this.hintText,
     this.controller,
     this.onChanged,
+    this.borderColor = Colors.grey,
+    this.focusNode,
+    this.onSubmitted,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      focusNode: focusNode,
       onChanged: onChanged,
+      onSubmitted: onSubmitted,
       style: Theme.of(context).textTheme.titleMedium,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.edit_outlined),
@@ -30,14 +38,11 @@ class MyTextfield extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(color: Colors.grey.shade400, width: 1.2),
+          borderSide: BorderSide(color: borderColor, width: 1.6),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 24, 227, 166),
-            width: 2,
-          ),
+          borderSide: BorderSide(color: borderColor, width: 2),
         ),
       ),
     );

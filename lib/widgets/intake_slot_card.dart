@@ -18,6 +18,7 @@ class IntakeSlotCard extends StatelessWidget {
     return Consumer2<IntakeSlotModel, ReminderTimeModel>(
       builder: (context, intakeSlotModel, reminderTimeModel, child) {
         final time = reminderTimeModel.getTime(dayPart);
+        final amount = intakeSlotModel.getAmount(dayPart);
 
         return MyCard(
           border: Border.all(width: 1),
@@ -55,9 +56,11 @@ class IntakeSlotCard extends StatelessWidget {
                               intakeSlotModel.removeOne(dayPart),
                           onRemoveHalf: () =>
                               intakeSlotModel.removeHalf(dayPart),
+
+                          canRemoveFull: amount >= 1,
+                          canRemoveHalf: amount >= 0.5,
                         ),
                       ),
-
                       SizedBox(width: 8),
 
                       Expanded(

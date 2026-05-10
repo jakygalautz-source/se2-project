@@ -12,6 +12,7 @@ import 'package:pill_pilot/models/medication_list_model.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/services/notifications_service.dart';
 import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/data/medication_suggestions.dart';
 
 class MedicationPage extends StatefulWidget {
   final bool isEditMode;
@@ -28,6 +29,7 @@ class _MedicationPageState extends State<MedicationPage> {
       TextEditingController();
 
   bool isSaving = false;
+  bool showNameError = false;
 
   @override
   void initState() {
@@ -55,6 +57,18 @@ class _MedicationPageState extends State<MedicationPage> {
         .toLowerCase();
     final navigator = Navigator.of(context);
     final reminderTimeModel = context.read<ReminderTimeModel>();
+
+    if (medicationNameController.text.trim().isEmpty) {
+      setState(() => showNameError = true);
+
+      MySnackbar.show(
+        context,
+        message: "Bitte einen Medikamentennamen eingeben",
+        backgroundColor: Colors.grey.shade800,
+      );
+
+      return;
+    }
 
     if (!medicationFormModel.isValid) {
       MySnackbar.show(
@@ -155,12 +169,65 @@ class _MedicationPageState extends State<MedicationPage> {
             children: [
               const SizedBox(height: 20),
 
-              MyTextfield(
-                controller: medicationNameController,
-                hintText: "Name des Medikaments eingeben",
-                onChanged: (value) {
-                  context.read<MedicationFormModel>().setMedicationName(value);
+              Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text.isEmpty) {
+                    return const Iterable<String>.empty();
+                  }
+
+                  return medicationSuggestions.where((medication) {
+                    return medication.toLowerCase().contains(
+                      textEditingValue.text.toLowerCase(),
+                    );
+                  });
                 },
+
+                onSelected: (selection) {
+                  medicationNameController.text = selection;
+
+                  context.read<MedicationFormModel>().setMedicationName(
+                    selection,
+                  );
+
+                  FocusScope.of(context).unfocus();
+
+                  if (showNameError) {
+                    setState(() => showNameError = false);
+                  }
+                },
+
+                fieldViewBuilder:
+                    (
+                      context,
+                      textEditingController,
+                      focusNode,
+                      onFieldSubmitted,
+                    ) {
+                      textEditingController.text =
+                          medicationNameController.text;
+
+                      return MyTextfield(
+                        controller: textEditingController,
+                        focusNode: focusNode,
+                        hintText: "Name des Medikaments eingeben",
+                        borderColor: showNameError
+                            ? Colors.redAccent
+                            : Colors.grey.shade400,
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                        },
+                        onChanged: (value) {
+                          medicationNameController.text = value;
+                          context.read<MedicationFormModel>().setMedicationName(
+                            value,
+                          );
+
+                          if (showNameError && value.trim().isNotEmpty) {
+                            setState(() => showNameError = false);
+                          }
+                        },
+                      );
+                    },
               ),
 
               const SizedBox(height: 16),
@@ -202,14 +269,65 @@ class _MedicationPageState extends State<MedicationPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20),
-                  MyTextfield(
-                    controller: medicationNameController,
-                    hintText: "Name des Medikaments eingeben",
-                    onChanged: (value) {
-                      context.read<MedicationFormModel>().setMedicationName(
-                        value,
-                      );
+                  Autocomplete<String>(
+                    optionsBuilder: (TextEditingValue textEditingValue) {
+                      if (textEditingValue.text.isEmpty) {
+                        return const Iterable<String>.empty();
+                      }
+
+                      return medicationSuggestions.where((medication) {
+                        return medication.toLowerCase().contains(
+                          textEditingValue.text.toLowerCase(),
+                        );
+                      });
                     },
+
+                    onSelected: (selection) {
+                      medicationNameController.text = selection;
+
+                      context.read<MedicationFormModel>().setMedicationName(
+                        selection,
+                      );
+
+                      FocusScope.of(context).unfocus();
+
+                      if (showNameError) {
+                        setState(() => showNameError = false);
+                      }
+                    },
+
+                    fieldViewBuilder:
+                        (
+                          context,
+                          textEditingController,
+                          focusNode,
+                          onFieldSubmitted,
+                        ) {
+                          textEditingController.text =
+                              medicationNameController.text;
+
+                          return MyTextfield(
+                            controller: textEditingController,
+
+                            hintText: "Name des Medikaments eingeben",
+
+                            borderColor: showNameError
+                                ? Colors.redAccent
+                                : Colors.grey.shade400,
+
+                            onChanged: (value) {
+                              medicationNameController.text = value;
+
+                              context
+                                  .read<MedicationFormModel>()
+                                  .setMedicationName(value);
+
+                              if (showNameError && value.trim().isNotEmpty) {
+                                setState(() => showNameError = false);
+                              }
+                            },
+                          );
+                        },
                   ),
 
                   const SizedBox(height: 16),

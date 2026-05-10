@@ -23,20 +23,20 @@ class PillAddButton extends StatelessWidget {
           Expanded(
             child: _buildHalfButton(
               context,
-              label: "+1",
-              imagePath: "lib/images/pill.png",
-              onTap: onAddFull,
-              backgroundColor: Colors.blue,
+              label: "+½",
+              imagePath: "lib/images/open-pill.png",
+              onTap: onAddHalf,
+              backgroundColor: Colors.transparent,
             ),
           ),
           const SizedBox(width: 6),
           Expanded(
             child: _buildHalfButton(
               context,
-              label: "+½",
-              imagePath: "lib/images/open-pill.png",
-              onTap: onAddHalf,
-              backgroundColor: Colors.transparent,
+              label: "+1",
+              imagePath: "lib/images/pill.png",
+              onTap: onAddFull,
+              backgroundColor: Colors.blue,
             ),
           ),
         ],
