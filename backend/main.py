@@ -9,6 +9,7 @@ import uvicorn
 from routers.medication import router as medication_router
 from routers.reminder_times import router as reminder_times_router
 from routers.settings import router as settings_router
+from routers.auth import router as auth_router
 
 from sqlalchemy.orm import Session
 from sqlalchemy import text
@@ -28,6 +29,7 @@ app = FastAPI()
 app.include_router(medication_router)
 app.include_router(reminder_times_router)
 app.include_router(settings_router)
+app.include_router(auth_router)
 
 
 #-------------------------------------------
