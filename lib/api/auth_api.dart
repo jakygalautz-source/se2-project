@@ -8,11 +8,13 @@ class AuthApi {
   static Future<void> register(RegisterRequest request) async {
     final url = Uri.parse('$baseUrl/register');
 
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(request.toJson()),
-    );
+    final response = await http
+        .post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(request.toJson()),
+        )
+        .timeout(const Duration(seconds: 3));
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception('Registrierung fehlgeschlagen');
@@ -22,11 +24,13 @@ class AuthApi {
   static Future<AuthUser> login(LoginRequest request) async {
     final url = Uri.parse('$baseUrl/login');
 
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(request.toJson()),
-    );
+    final response = await http
+        .post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(request.toJson()),
+        )
+        .timeout(const Duration(seconds: 3));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
