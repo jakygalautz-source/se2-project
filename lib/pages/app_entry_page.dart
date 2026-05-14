@@ -67,7 +67,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
         body: SafeArea(child: Center(child: CircularProgressIndicator())),
       );
     }
-    return const HomePage();
-    // return const LoginPage();
+    // return const HomePage();
+    return const LoginPage();
   }
 }

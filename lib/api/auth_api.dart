@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pill_pilot/models/auth_model.dart';
+import 'package:pill_pilot/api/api_config.dart';
 
 class AuthApi {
-  static const String baseUrl = "http://192.168.178.27:8000";
-
   static Future<void> register(RegisterRequest request) async {
-    final url = Uri.parse('$baseUrl/register');
+    final url = Uri.parse('$ApiConfig.baseUrl/register');
 
     final response = await http
         .post(
@@ -22,7 +21,7 @@ class AuthApi {
   }
 
   static Future<AuthUser> login(LoginRequest request) async {
-    final url = Uri.parse('$baseUrl/login');
+    final url = Uri.parse('$ApiConfig.baseUrl/login');
 
     final response = await http
         .post(

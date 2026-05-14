@@ -1,14 +1,12 @@
 import 'dart:convert'; // macht aus Dart-Map echtes json
 import 'package:http/http.dart' as http;
 import 'package:pill_pilot/models/medication_model.dart';
+import 'package:pill_pilot/api/api_config.dart';
 
 class MedicationApi {
-  static const String baseUrl =
-      "http://192.168.178.27:8000"; // baseUrl: wo ist mein BAckend? -> serveradresse, für emulator 10.0.2.2:8000, für test auf Handy ohne server: 192.168.178.27 (ist meine ipv4)
-
   static Future<void> saveMedication(Map<String, dynamic> data) async {
     final url = Uri.parse(
-      "$baseUrl/medications", // ebentuell medications anpassen, je nachdem wie jaqui es nennt
+      "$ApiConfig.baseUrl/medications", // ebentuell medications anpassen, je nachdem wie jaqui es nennt
     );
 
     final response = await http
@@ -26,7 +24,7 @@ class MedicationApi {
 
   static Future<List<Medication>> getMedications() async {
     final url = Uri.parse(
-      "$baseUrl/medications",
+      "$ApiConfig,baseUrl/medications",
     ); // ebentuell medications anpassen, je nachdem wie jaqui es nennt
 
     final response = await http.get(url).timeout(const Duration(seconds: 2));
@@ -43,7 +41,7 @@ class MedicationApi {
   }
 
   static Future<void> deleteMedication(int id) async {
-    final url = Uri.parse("$baseUrl/medications/$id");
+    final url = Uri.parse("$ApiConfig.baseUrl/medications/$id");
 
     final response = await http.delete(url).timeout(const Duration(seconds: 2));
 

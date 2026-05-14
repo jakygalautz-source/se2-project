@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pill_pilot/models/settings_model.dart';
+import 'package:pill_pilot/api/api_config.dart';
 
 class SettingsApi {
-  static const String baseUrl = "http://192.168.178.27:8000";
-
   static Future<SettingsModel> loadSettings() async {
-    final url = Uri.parse('$baseUrl/settings');
+    final url = Uri.parse('$ApiConfig.baseUrl/settings');
 
     final response = await http.get(url);
 
@@ -19,7 +18,7 @@ class SettingsApi {
   }
 
   static Future<void> saveSettings(SettingsModel settings) async {
-    final url = Uri.parse('$baseUrl/settings');
+    final url = Uri.parse('$ApiConfig.baseUrl/settings');
 
     final response = await http.post(
       url,
