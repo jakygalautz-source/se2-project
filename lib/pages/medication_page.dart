@@ -97,7 +97,14 @@ class _MedicationPageState extends State<MedicationPage> {
     setState(() => isSaving = true);
 
     try {
-      await MedicationApi.saveMedication(medicationFormModel.toJson());
+      if (widget.isEditMode && widget.medication?.id != null) {
+        await MedicationApi.updateMedication(
+          widget.medication!.id!,
+          medicationFormModel.toJson(),
+        );
+      } else {
+        await MedicationApi.saveMedication(medicationFormModel.toJson());
+      }
     } catch (_) {
       if (!mounted) return;
 
