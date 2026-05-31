@@ -4,7 +4,7 @@ import 'package:pill_pilot/api/api_config.dart';
 
 class ReminderTimeApi {
   static Future<void> saveReminderTimes(Map<String, dynamic> data) async {
-    final url = Uri.parse("$ApiConfig.baseUrl/reminder-times");
+    final url = Uri.parse("${ApiConfig.baseUrl}/reminder-times");
 
     final response = await http
         .post(
@@ -20,7 +20,7 @@ class ReminderTimeApi {
   }
 
   static Future<Map<String, dynamic>> getReminderTimes() async {
-    final url = Uri.parse("$ApiConfig.baseUrl/reminder-times");
+    final url = Uri.parse("${ApiConfig.baseUrl}/reminder-times");
 
     final response = await http.get(url).timeout(const Duration(seconds: 2));
 

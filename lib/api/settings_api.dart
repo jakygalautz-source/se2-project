@@ -5,7 +5,7 @@ import 'package:pill_pilot/api/api_config.dart';
 
 class SettingsApi {
   static Future<SettingsModel> loadSettings() async {
-    final url = Uri.parse('$ApiConfig.baseUrl/settings');
+    final url = Uri.parse('${ApiConfig.baseUrl}/settings');
 
     final response = await http.get(url);
 
@@ -18,7 +18,7 @@ class SettingsApi {
   }
 
   static Future<void> saveSettings(SettingsModel settings) async {
-    final url = Uri.parse('$ApiConfig.baseUrl/settings');
+    final url = Uri.parse('${ApiConfig.baseUrl}/settings');
 
     final response = await http.post(
       url,

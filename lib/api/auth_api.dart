@@ -5,7 +5,7 @@ import 'package:pill_pilot/api/api_config.dart';
 
 class AuthApi {
   static Future<void> register(RegisterRequest request) async {
-    final url = Uri.parse('$ApiConfig.baseUrl/register');
+    final url = Uri.parse('${ApiConfig.baseUrl}/register');
 
     final response = await http
         .post(
@@ -21,7 +21,7 @@ class AuthApi {
   }
 
   static Future<AuthUser> login(LoginRequest request) async {
-    final url = Uri.parse('$ApiConfig.baseUrl/login');
+    final url = Uri.parse('${ApiConfig.baseUrl}/login');
 
     final response = await http
         .post(
