@@ -33,12 +33,33 @@ class NextIntakeModel {
   }
 
   String get subtitle {
-    if (minutesUntil <= 0) {
-      return 'jetzt fällig';
+    if (medications.isEmpty) {
+      return 'Keine Einnahme geplant';
     }
-    if (minutesUntil == 1) {
-      return 'in 1 Minute';
+
+    final now = DateTime.now();
+
+    final today = DateTime(now.year, now.month, now.day);
+
+    final tomorrow = today.add(const Duration(days: 1));
+
+    final scheduledDay = DateTime(
+      scheduledDateTime.year,
+      scheduledDateTime.month,
+      scheduledDateTime.day,
+    );
+
+    final hour = scheduledDateTime.hour.toString().padLeft(2, '0');
+    final minute = scheduledDateTime.minute.toString().padLeft(2, '0');
+
+    if (scheduledDay == today) {
+      return 'heute um $hour:$minute Uhr';
     }
-    return 'in $minutesUntil Minuten';
+
+    if (scheduledDay == tomorrow) {
+      return 'morgen um $hour:$minute Uhr';
+    }
+
+    return '$hour:$minute Uhr';
   }
 }
