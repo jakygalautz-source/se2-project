@@ -44,7 +44,7 @@ class _AddMedicationCardState extends State<AddMedicationCard> {
             const SizedBox(width: 10),
 
             Text(
-              "Medikament hinzufügen",
+              "Neues Medikament",
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],
