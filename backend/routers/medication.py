@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from database import get_db
 from schemas import Medication
+from routers.auth import get_current_user_id
 
 # -------------------------------------------
 # Create router for medication endpoints
@@ -26,12 +27,10 @@ router = APIRouter()
 
 @router.post("/medications", status_code=201)
 async def create_medication(
-    medication: Medication, 
-    db: Session = Depends(get_db)
+    medication: Medication,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
     ):
-    
-    # Temporary fixed user ID until login/authentication exists
-    user_id = 1
 
     try:
         # Insert medication into the medications table
@@ -100,10 +99,9 @@ async def create_medication(
 # -------------------------------------------
 @router.get("/medications")
 def get_medications(
-    db: Session = Depends(get_db)
-):
-    # Temporary fixed user ID until login/authentication exists
-    user_id = 1
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
+    ):
 
     # Get all medications for this user
     medications = db.execute(
@@ -160,7 +158,8 @@ def get_medications(
 @router.delete("/medications/{id}")
 def delete_medication(
     id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
 ):
     try:
         # Delete medication from database
@@ -168,10 +167,11 @@ def delete_medication(
         result = db.execute(
             text("""
                 DELETE FROM medications
-                WHERE id = :id
+                WHERE id = :id AND user_id = :user_id
             """),
             {
-                "id": id
+                "id": id,
+                "user_id": user_id
             }
         )
 
@@ -209,7 +209,8 @@ def delete_medication(
 def update_medication(
     id: int,
     updated_medication: Medication,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
 ):
     try:
         # Check if medication exists
@@ -217,10 +218,11 @@ def update_medication(
             text("""
                 SELECT id
                 FROM medications
-                WHERE id = :id
+                WHERE id = :id AND user_id = :user_id
             """),
             {
-                "id": id
+                "id": id,
+                "user_id": user_id
             }
         ).fetchone()
 
@@ -236,10 +238,11 @@ def update_medication(
                 UPDATE medications
                 SET name = :name,
                     updated_at = CURRENT_TIMESTAMP
-                WHERE id = :id
+                WHERE id = :id AND user_id = :user_id
             """),
             {
                 "id": id,
+                "user_id": user_id,
                 "name": updated_medication.name
             }
         )

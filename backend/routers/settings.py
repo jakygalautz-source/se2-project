@@ -5,6 +5,7 @@ import bcrypt
 
 from database import get_db
 from schemas import SettingsResponse, SettingsUpdate
+from routers.auth import get_current_user_id
 
 #-------------------------------------------
 # initialize router for reminder EP
@@ -23,10 +24,10 @@ def hash_password(password: str) -> str:
 # -------------------------------------------
 @router.get("/settings", response_model=SettingsResponse)
 def get_settings(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
 ):
-    # Temporary fixed user ID until login/authentication exists
-    user_id = 1
+
 
     try:
         # Get user settings from database
@@ -71,10 +72,9 @@ def get_settings(
 @router.post("/settings")
 def save_settings(
     settings: SettingsUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id)
 ):
-    # Temporary fixed user ID until login/authentication exists
-    user_id = 1
 
     try:
         # Check if user exists
