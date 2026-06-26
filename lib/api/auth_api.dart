@@ -13,7 +13,7 @@ class AuthApi {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(request.toJson()),
         )
-        .timeout(const Duration(seconds: 3));
+        .timeout(const Duration(seconds: 15));
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception('Registrierung fehlgeschlagen');
@@ -29,7 +29,7 @@ class AuthApi {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(request.toJson()),
         )
-        .timeout(const Duration(seconds: 3));
+        .timeout(const Duration(seconds: 15));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
