@@ -25,7 +25,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
 
   Future<void> _initializeApp() async {
     final reminderTimeModel = context.read<ReminderTimeModel>();
-    final medicationListModel = context.read<MedicationListModel>();
+    // final medicationListModel = context.read<MedicationListModel>();
 
     await NotificationsService.instance.init();
     await NotificationsService.instance.requestPermissions();
@@ -39,9 +39,11 @@ class _AppEntryPageState extends State<AppEntryPage> {
       reminderTimeModel.loadFromJson(reminderData);
     } catch (_) {}
 
+    /*
     try {
       await medicationListModel.loadMedications();
     } catch (_) {}
+    */
 
     if (!mounted) return;
 
@@ -49,6 +51,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
       _isLoading = false;
     });
 
+    /*
     try {
       await NotificationsService.instance.rescheduleFromCurrentData(
         reminderTimeModel: reminderTimeModel,
@@ -58,6 +61,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
       debugPrint("Initial reminder scheduling failed: $e");
       debugPrintStack(stackTrace: st);
     }
+    */
   }
 
   @override

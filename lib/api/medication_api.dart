@@ -2,17 +2,14 @@ import 'dart:convert'; // macht aus Dart-Map echtes json
 import 'package:http/http.dart' as http;
 import 'package:pill_pilot/models/medication_model.dart';
 import 'package:pill_pilot/api/api_config.dart';
+import 'package:pill_pilot/models/session.dart';
 
 class MedicationApi {
   static Future<void> saveMedication(Map<String, dynamic> data) async {
     final url = Uri.parse("${ApiConfig.baseUrl}/medications");
 
     final response = await http
-        .post(
-          url,
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(data),
-        )
+        .post(url, headers: _headers(), body: jsonEncode(data))
         .timeout(const Duration(seconds: 2));
 
     if (response.statusCode != 200 && response.statusCode != 201) {
@@ -20,12 +17,21 @@ class MedicationApi {
     }
   }
 
+  static Map<String, String> _headers() {
+    return {
+      "Content-Type": "application/json",
+      if (Session.token != null) "Authorization": "Bearer ${Session.token}",
+    };
+  }
+
   static Future<List<Medication>> getMedications() async {
     final url = Uri.parse(
       "${ApiConfig.baseUrl}/medications",
     ); // ebentuell medications anpassen, je nachdem wie jaqui es nennt
 
-    final response = await http.get(url).timeout(const Duration(seconds: 2));
+    final response = await http
+        .get(url, headers: _headers())
+        .timeout(const Duration(seconds: 2));
 
     if (response.statusCode != 200) {
       throw Exception();
@@ -45,11 +51,7 @@ class MedicationApi {
     final url = Uri.parse("${ApiConfig.baseUrl}/medications/$id");
 
     final response = await http
-        .put(
-          url,
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(data),
-        )
+        .put(url, headers: _headers(), body: jsonEncode(data))
         .timeout(const Duration(seconds: 2));
 
     if (response.statusCode != 200) {
@@ -60,7 +62,9 @@ class MedicationApi {
   static Future<void> deleteMedication(int id) async {
     final url = Uri.parse("${ApiConfig.baseUrl}/medications/$id");
 
-    final response = await http.delete(url).timeout(const Duration(seconds: 2));
+    final response = await http
+        .delete(url, headers: _headers())
+        .timeout(const Duration(seconds: 2));
 
     if (response.statusCode != 200 && response.statusCode != 204) {
       throw Exception();

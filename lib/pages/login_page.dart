@@ -5,6 +5,11 @@ import 'package:pill_pilot/widgets/my_card.dart';
 import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/widgets/login_button.dart';
 import 'package:pill_pilot/widgets/password_textfield.dart';
+import 'package:pill_pilot/models/session.dart';
+import 'package:provider/provider.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
+import 'package:pill_pilot/models/reminder_time_model.dart';
+import 'package:pill_pilot/services/notifications_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,8 +45,24 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
 
+    final medicationListModel = context.read<MedicationListModel>();
+    final reminderTimeModel = context.read<ReminderTimeModel>();
+    final navigator = Navigator.of(context);
+
     try {
-      await AuthApi.login(LoginRequest(email: email, password: password));
+      final user = await AuthApi.login(
+        LoginRequest(email: email, password: password),
+      );
+
+      Session.token = user.accessToken;
+      Session.userId = user.id;
+
+      await medicationListModel.loadMedications();
+
+      await NotificationsService.instance.rescheduleFromCurrentData(
+        reminderTimeModel: reminderTimeModel,
+        medications: medicationListModel.medications,
+      );
 
       if (!mounted) return;
 
