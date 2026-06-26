@@ -5,6 +5,9 @@ import 'package:pill_pilot/widgets/my_snackbar.dart';
 import 'package:pill_pilot/api/settings_api.dart';
 import 'package:pill_pilot/models/settings_model.dart';
 import 'package:pill_pilot/widgets/password_textfield.dart';
+import 'package:pill_pilot/models/session.dart';
+import 'package:provider/provider.dart';
+import 'package:pill_pilot/models/medication_list_model.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -19,6 +22,35 @@ class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    try {
+      final settings = await SettingsApi.loadSettings();
+
+      if (!mounted) return;
+
+      _usernameController.text = settings.username;
+      _emailController.text = settings.email;
+    } catch (_) {
+      if (!mounted) return;
+
+      MySnackbar.show(
+        context,
+        message: "Profileinstellungen konnten nicht geladen werden",
+        backgroundColor: Colors.grey.shade800,
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -84,11 +116,29 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  void _handleLogout() {
+    Session.token = null;
+    Session.userId = null;
+
+    context.read<MedicationListModel>().medications.clear();
+
+    Navigator.pushNamedAndRemoveUntil(context, '/login_page', (route) => false);
+  }
+
   bool _isSaving = false;
+  bool _isLoading = true;
+
   @override
   Widget build(BuildContext context) {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+
+    if (_isLoading) {
+      return const Scaffold(
+        body: SafeArea(child: Center(child: CircularProgressIndicator())),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text("Einstellungen")),
       body: SafeArea(
@@ -119,6 +169,8 @@ class _SettingsPageState extends State<SettingsPage> {
             width: double.infinity,
             child: SaveButton(onTap: _handleSave, isLoading: _isSaving),
           ),
+          const SizedBox(height: 12),
+          TextButton(onPressed: _handleLogout, child: const Text("Ausloggen")),
         ],
       ),
     );
@@ -149,6 +201,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: SizedBox(
                     width: 260,
                     child: SaveButton(onTap: _handleSave, isLoading: _isSaving),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _handleLogout,
+                    child: const Text("Ausloggen"),
                   ),
                 ),
               ],
