@@ -1,4 +1,4 @@
 class ApiConfig {
-  static const String baseUrl = "http://192.168.178.27:8000"; // mein ip4
+  static const String baseUrl = "https://se2-project-g3g4.onrender.com"; // mein ip4
   // static const String baseUrl = "";                           TODO Roli ip4
 }
